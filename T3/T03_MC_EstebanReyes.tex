@@ -1,0 +1,524 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,USenglish]{babel}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{setspace}
+\usepackage{enumerate} 
+%gráficos y figuras
+\usepackage{pgf,tikz,pgfplots}
+\usetikzlibrary{arrows}
+\pgfplotsset{compat=1.15}
+\usetikzlibrary{trees,arrows,positioning,calc}
+\tikzstyle{redVertex}  =[draw,fill=red,circle,minimum size=30pt,inner sep=-0pt, text=white]
+\tikzstyle{blackVertex}=[draw,fill=black,circle,minimum size=30pt,inner sep=0pt, text=white]
+\tikzstyle{nil}=[draw,fill=black,rectangle,minimum size=30pt,inner sep=0pt, text=white]
+%escribir programas
+\usepackage{listings}
+%encabezado
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+% Números de página en las esquinas de los encabezados
+\fancyhead[R]{\thepage} 
+%Espacio para Titulo (revisar warnings)
+\setlength{\headheight}{14.5pt}
+% Formato para la sección: N.M. Nombre
+\renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}{}} 
+%título
+\title{ \textbf{Tarea Tres} \\ Optimización I}
+\author{Esteban Reyes Saldaña}
+\date{\today}
+%definiciones
+\theoremstyle{definition}
+\newtheorem{problm}{Problema}
+\usepackage{colortbl}
+\usepackage{tabularx}
+\usepackage{dcolumn}
+\usepackage{multirow}
+\usetikzlibrary[patterns]
+
+\begin{document}
+	
+\selectlanguage{spanish}
+\maketitle 
+\begin{problm}
+		¿El conjunto $ S = \{ a \in \mathbb{R}^K | p(0) = 1, | p(t) | \leq 1 \textup{ para } t \in [\alpha, \beta] \} $ donde 
+		\[ p(t) = a_1 + a_2 t + \dots + a_k t^{k-1}, \]
+		es convexo?
+		\\
+		\textbf{Solución}. Sí es convexo. Sean $ a, b \in S $ entonces $ a, b \in \mathbb{R}^k $. Por cerradura,
+		\[ \alpha a + (1-\alpha) b \in \mathbb{R}^K \]
+		para $ \alpha \in \mathbb{R}^k $. Luego,
+		\begin{eqnarray*}
+			\alpha a + ( 1 - \alpha) b & = & \alpha [a_1, a_2, \dots, a_k]^T - (1-\alpha) [b_1, b_2, \dots, b_k]^T \\
+									   & = & [\alpha a_1 + ( 1 - \alpha) b_1, \dots, \alpha a_k + ( 1 - \alpha) b_k]
+		\end{eqnarray*}
+		Como $ a \in S $,
+		\[ p(0) = a_1 = 1. \]
+		Como $ b \in S $,
+		\[ p(0) = b_1 = 1. \]
+		Ahora,
+		\begin{eqnarray*}
+			p(0) & = & \alpha a_1 + ( 1- \alpha) b_1 \\
+			     & = & \alpha + (1 - \alpha) \\
+			     & = & 1.
+		\end{eqnarray*}
+		Por otro lado,
+		\begin{eqnarray*}
+			1 & \geq & |p_a (t) | \\
+			  &   =  & |a_1 + a_2 t + \dots + a_k t^{k-1} |
+		\end{eqnarray*}
+		y 
+		\begin{eqnarray*}
+			1 & \geq & |p_b (t) | \\
+			&   =  & |b_1 + b_2 t + \dots + b_k t^{k-1} |
+		\end{eqnarray*}
+		Así que
+		\begin{eqnarray*}
+			|p_{\alpha a + (1-\alpha) b}  (t)| & = & |\alpha p_a (t) + (1 - \alpha) p_b (t)| \\
+											 & \leq & |\alpha| |p_a (t) | + |1-\alpha| |p_b (t) | \\
+											 & \leq & \alpha (1) + (1 - \alpha) (1) \\
+											 & = & 1
+		\end{eqnarray*}
+	Así que $ p_{\alpha a + (1-\alpha) b} (t) \in S $. Se concluye que $ S $ es convexo.
+\end{problm}
+
+\begin{problm}
+	Suponga que $ f $ es convexa, $ \lambda_1 > 0 $ y $ \lambda_2 \leq 0 $ con $ \lambda_1 + \lambda_2 = 1 $ y $ x_1, x_2 \in dom(f) $. Demuestre que la desigualdad
+	\[ f(\lambda_1 x_1 + \lambda_2 x_2) \geq \lambda_1 f(x_1) + \lambda_2 f(x_2) \]
+	siempre es verdadera.
+	\begin{proof}
+		Como $ \lambda_2 \leq 0 $ y $ - \lambda_2 \geq 0 $ entonces
+		\[ \lambda_1 = 1 - \lambda_2 \geq 1 \]
+		así que
+		\begin{equation}
+			0 < \dfrac{1}{\lambda_1} \leq 1.
+		\end{equation}
+		Además, 
+		\begin{eqnarray*}
+			-1 & \leq & -\dfrac{1}{\lambda_1} < 0 \\
+			 0 & \leq & 1 - \dfrac{1}{\lambda_1} < 1.
+		\end{eqnarray*}
+		Notemos que
+		\begin{eqnarray*}
+			\dfrac{1}{\lambda_1} (\lambda_1 x_1 + \lambda_2 x_2) + \left( 1-\dfrac{1}{\lambda_1} \right)x_2 & = & x_1 + \dfrac{\lambda_2}{\lambda_1} x_2 + \left( \dfrac{\lambda_1 - 1}{\lambda_1} \right) x_2 \\
+											  & = & x_1 + \dfrac{\lambda_2}{\lambda_1} x_2 - \dfrac{\lambda_2}{\lambda_1} x_2 \\
+											  & = & x_1.
+		\end{eqnarray*}
+		Además, por hipótesis
+		\[ \lambda_1 x_1 + \lambda_2 x_2 \in Dom(f). \]
+		Luego, dado que $ f(x) $ es convexa y usando $ \dfrac{1}{\lambda_1} \in (0,1] $ entonces
+		\begin{eqnarray*}
+			f (x_1) & = & f \left( \dfrac{1}{\lambda_1} (\lambda_1 x_1 + \lambda_2 x_2) + \left( 1-\dfrac{1}{\lambda_1} \right)x_2 \right) \\
+			        & \leq & \dfrac{1}{\lambda_1} f(\lambda_1 x_1 + \lambda_2 x_2) + \left( 1-\dfrac{1}{\lambda_1} \right)f(x_2) \\
+			        & = & \dfrac{1}{\lambda_1} f(\lambda_1 x_1 + \lambda_2 x_2) - \dfrac{\lambda_2}{\lambda_1} f(x_2) \\
+		    \lambda_1 f (x_1) & \leq & f(\lambda_1 x_1 + \lambda_2 x_2) - \lambda_2 f(x_2) \\
+		    f(\lambda_1 x_1 + \lambda_2 x_2) & \geq & \lambda_1 f (x_1) + \lambda_2 f(x_2).
+		\end{eqnarray*}
+	\end{proof}
+\end{problm}
+
+\begin{problm}
+	Demuestre que la función $ f: \mathbb{R}^n \to \mathbb{R} $
+	\[ f(x) = \exp (- g(x)) \]
+	es convexo. Donde $ g: \mathbb{R}^n \to \mathbb{R} $ tiene dominio convexo y satisface que
+	\[ \left[\begin{matrix}
+		\nabla^2 g(x) & \nabla g(x) \\
+		\nabla^T g(x) & 1
+	\end{matrix}\right]
+	\geq 0 \]
+	para $ x \in dom(g) $.
+	\begin{proof}
+		En clase se vió que una función es convexa si y sólo si su Hessiano es definido semipositivo sobre su dominio covexo. Entonces se probará que $ -exp(-g(x)) $ es convexa usando este resultado. \\
+		Utilizando la relación gradiente-derivada y regla de la cadena tenemos que
+		\begin{eqnarray*}
+			\nabla f(x) & = & - exp(-g(x)) (-1) \nabla g(x) \\
+						& = & exp(-g(x)) \nabla g(x).
+		\end{eqnarray*}
+		Para calcular el Hessiano se usa lo anterior y la regla de producto, entonces
+		\begin{eqnarray*}
+			\nabla^2 f(x) & = & \nabla (exp(-g(x)) \nabla g(x)) \\
+						  & = & exp(-g(x)) \nabla^2 g(x) + \nabla g(x) \exp(-g(x)) (-1) \nabla^T g(x) \\
+						  & = & exp(-g(x)) \left[ \nabla^2 g(x) - \nabla g(x) \nabla^T g(x) \right]   
+		\end{eqnarray*}
+		Sabemos que Por otro lado, dado que la matriz del enunciado del problema está definida semi positiva entonces para todo $ x\in\mathbb{R}^n $
+		\[ xT A x \geq 0  \]
+		en particular para $ u^T = [x^T, -x^T \nabla g(x)] $. Luego
+		\begin{eqnarray*}
+			0 & \leq & u^T \left[\begin{matrix}
+				\nabla^2 g(x) & \nabla g(x) \\
+				\nabla^T g(x) & 1
+			\end{matrix}\right]
+			u \\
+			 & = & [x^T, - x^T \nabla g(x)] \left[\begin{matrix}
+												 \nabla^2 g(x) & \nabla g(x) \\
+												 \nabla^T g(x) & 1
+											 \end{matrix}\right]
+											 \left[\begin{matrix}
+											 	x \\
+											 	-\nabla^T g (x) x
+											 \end{matrix}\right] \\
+		     & = &  [x^T, - x^T \nabla g(x)] \left[\begin{matrix}
+										     	\nabla^2 g(x) x -\nabla g(x) \nabla^T g(x) x  \\
+										     	\nabla^T g(x) x - \nabla^T g(x)  x
+										     \end{matrix}\right] \\
+		     & = & x^T \nabla^2 g(x) x - x^T \nabla g(x) \nabla^T g(x) x \\
+		     &   & - x^T \nabla^T g(x) x + x^T \nabla g(x) \nabla^T g(x) x \\
+		     & = & x^T \nabla^2 g(x) x - x^T \nabla^T g(x) x.
+		\end{eqnarray*}
+			
+		y sabemos que $ exp(-g(x)) $ es mayor que cero. Entonces
+		\[ \nabla^2 f(x) = exp(-g(x)) \left[ \nabla^2 g(x) - \nabla g(x) \nabla^T g(x) \right] \geq 0.  \]
+		De lo anterior, $ \nabla^2 f(x) \geq 0 $ y entonces es definida semipositiva. Luego, concluímos que $ f(x) $ es convexa.
+	\end{proof}
+\end{problm}
+
+\begin{problm}
+	Demuestre que $ f(x,y) = x^2 / y $, $ y >0 $ es convexo.
+	\begin{proof}
+		De nuevo se probará que $ f(x,y) $ es convexa probando que su Hessiano es siempre definido positivo. Por un lado,
+		\begin{eqnarray*}
+			\nabla f(x,y) & = & \left[ 2x/y, x^2 (-1)/y^2 \right] \\
+			              & = & \left[ 2x/y, -x^2/y^2 \right].
+		\end{eqnarray*}
+		Entonces,
+		\begin{eqnarray*}
+			\nabla^2 f(x,y) & = & \left[\begin{matrix}
+										2/y & 2x(-1)/y^2 \\
+										-2x/y^2 & -x^2 (-2) / y^3
+								  \end{matrix}\right] \\
+							& = & \left[\begin{matrix}
+									2/y     & -2x/y^2 \\
+									-2x/y^2 &2x^2/ y^3
+								\end{matrix}\right] \\
+							& = & \dfrac{2}{y^3} 
+								  \left[\begin{matrix}
+								     	y^2     & -xy \\
+									  -xy & x^2
+								  \end{matrix}\right]
+		\end{eqnarray*}
+		Como $ y > 0 $ entonces 
+		\begin{equation}\label{mayor}
+			\dfrac{2}{y^3} > 0 .
+		\end{equation}
+		Por otro lado, sea $ s = [s_1, s_2]^T \in\mathbb{R}^2 $. Luego,
+		\begin{eqnarray*}
+			s^T \nabla^2 f(x,y) s & = & [s_1, s_2] \dfrac{2}{y^3} 
+										\left[\begin{matrix}
+											y^2     & -xy \\
+											-xy & x^2
+										\end{matrix}\right] 
+										\left[\begin{matrix}
+											s_1 \\
+											s_2
+										\end{matrix}\right]	\\
+								  & = & \dfrac{2}{y^3} [s_1, s_2]  
+										  \left[\begin{matrix}
+										  	y^2 s_1 - xy s_2 \\
+										  	-xys_1 + x^2 s_2
+										  \end{matrix}\right]	\\
+								  & = & \dfrac{2}{y^3} [ (y^2 s_1 - xys_2) s_1 + (x^2 s_2 - xys_1 ) s_2 ]	\\
+								  & = & \dfrac{2}{y^3} [ y^2 s_1^2 - xys_1 s_2 + x^2 s_2^2 - xys_1 s_2 ]	\\
+								  & = & \dfrac{2}{y^3} [ y^2 s_1^2 - 2xys_1 s_2 + x^2 s_2^2 ]	\\
+								  & = & \dfrac{2}{y^3} (y s_1 - x s_2 )^2\\
+		\end{eqnarray*} 
+		Ahora, dado (\ref{mayor}) y el hecho que , en $ \mathbb{R} $, todo número al cuadrado es mayor o igual que cero entonces
+		\[ s^T \nabla^2 f(x,y) s = \dfrac{2}{y^3} (y s_1 - x s_2 )^2 \geq 0. \]
+		Por lo tanto $ \nabla^2 f(x,y) $ es definida semipositiva. De lo anterior se concluye que $ f(x,y) $ es convexa.
+	\end{proof}
+\end{problm}
+
+\begin{problm}
+	Considere la función $ f(x_1, x_2) = (x_1 + x_2^2)^2 $. En el punto $ x^T = [1,0] $ considere la dirección de búsqueda $ p^T = [-1,1] $. Demuestre que $ p $ es una dirección de descenso y encuentre todos los minimizadores de la función.
+	\begin{proof}
+		Recordemos que $ p $ es una dirección de descenso si
+		\[ \nabla^T f(x) p < 0. \]
+		Por un lado,
+		\begin{eqnarray*}
+			\nabla f(x_1, x_2) & = & \left[ 2(x_1 + x_2^2), 2(x_1+ x_2 ^2) (2x_2) \right]^T \\
+							   & = & \left[ 2(x_1 + x_2^2), 4(x_1+ x_2 ^2) x_2 \right]^T
+		\end{eqnarray*}
+		entonces
+		\begin{eqnarray*}
+			\nabla f(1, 0) & = & \left[ 2(1 + 0), 2(1+0) 0 \right]^T \\
+			               & = & \left[ 2, 0 \right]^T
+		\end{eqnarray*}
+		Así que 
+		\begin{eqnarray*}
+			\nabla f(1, 0) p  & = & \left[ 2, 0 \right]^T
+									\left[\begin{matrix}
+										-1\\
+										1
+									\end{matrix}\right] \\
+			                  & = & -2 + 0 \\
+			                  & < & 0.
+		\end{eqnarray*}
+		De donde se concluye que $ p $ es una dirección de descenso para $ f(x_1, x_2) $.
+		\begin{itemize}
+			\item[(i)] \textit{Minimizadores usando gradiente-Hessiano}. El Hessiano de $ f(x_1, x_2) $ es
+			\begin{eqnarray}
+				\nabla^2 f(x_1, x_2) & = & \left[\begin{matrix}
+												2 x_2^2 & 4 x_2 \\
+												4 x_2   & 4(x_1 + 3 x_2^2)
+				\end{matrix}\right]
+			\end{eqnarray} 
+			Los puntos tales que 
+			\[ \nabla f(x_1, x_2) = 0 \]
+			deben cumplir
+			\begin{equation}
+				\left\{\begin{matrix}
+					x_1 + x_2^2 & = & 0 \\
+					(x_1 + x_2^2) x_2 & = & 0.
+				\end{matrix}\right.
+			\end{equation}
+			entonces $ x_1 = x_2 = 0 $. Luego,
+			\begin{eqnarray}
+				\nabla^2 f(0, 0) & = & \left[\begin{matrix}
+					0 & 0 \\
+					0   & 0
+				\end{matrix}\right]
+			\end{eqnarray} 
+			por lo que no podemos decir si dicho punto es mínimo.
+			\item[(ii)] \textit{Minimizadores en dirección $ x $ y $ p $}.
+		\end{itemize}
+		Sea $ g(\alpha): \mathbb{R} \to \mathbb{R}$ dada por 
+		\[ g(\alpha) = f(x + \alpha p). \]
+		Queremos encontrar todos los minimizadores de $ g(\alpha) $ para $ \alpha > 0 $. Entonces buscamos aquellos puntos en los que 
+		\begin{eqnarray*}
+			0 & = & g'(\alpha) \\
+			  & = & \nabla^T f(x + \alpha p) p.
+		\end{eqnarray*}
+		con $ x^T = [1, 0] $ y $ p^T = [-1,1] $. Así que, para esta configuración tenemos
+		\begin{eqnarray*}
+			x + \alpha p & = & \left[\begin{matrix}
+									1 \\
+									0
+							   \end{matrix}\right]
+						   		+
+						   		\left[\begin{matrix}
+						   			-\alpha \\
+						   			\alpha
+						   		\end{matrix}\right] \\
+					     & = & \left[\begin{matrix}
+							     	1 - \alpha \\
+							     	\alpha
+							   \end{matrix}\right].
+		\end{eqnarray*}
+		Ahora,
+		\begin{eqnarray*}
+			0 & = & \nabla^T f(x + \alpha p) \left[\begin{matrix}
+								-1 \\
+								1
+			\end{matrix}\right] \\
+			  & = & [ 2 (1 -\alpha + \alpha^2), 4 \alpha  (1 -\alpha + \alpha^2) ]
+			  		\left[\begin{matrix}
+			  			-1 \\
+			  			1
+			  		\end{matrix}\right] \\
+		  	  & = & -2 (1 -\alpha + \alpha^2) + 4\alpha (1 -\alpha + \alpha^2) \\
+		  	  & = & ( 4\alpha -2 ) (1 -\alpha + \alpha^2)
+		\end{eqnarray*}
+		Notemos que
+		\begin{eqnarray*}
+			\alpha^2 - \alpha + 1 & = & (\alpha^2 - \alpha + 1/4 + 3/4 \\
+								  & = & (\alpha - 1/2)^2 + 3/4  \\
+								  & > & 0.
+		\end{eqnarray*}
+		Así que $ ( 4\alpha -2 ) (1 -\alpha + \alpha^2) =0 $ si y sólo si
+		\[ \alpha = \dfrac{1}{2}. \]
+		Dado que ya se desmostró que $ p $ es una dirección de descenso y que $ f(x + \alpha p) $ crece cuando $ \alpha $ crece, se concluye que 
+		\[ x + \alpha p = \left[\begin{matrix}
+								1/2 \\
+								1/2
+		\end{matrix}\right] \]
+		es el único minimizador de $ f(x_1, x_2) $.
+	\end{proof}
+\end{problm}
+
+\begin{problm}
+	Encuentre todos los valores del parámetro $ a $ tales que $ [1,0]^T $ es el minimizador o maximizador de la función
+	\[ f(x_1, x_2) = a^3 x_1 e^{x_2} + 2 a^2 \log (x_1 + x_2) - (a + 2) x_1 + 8 a x_2 + 16 x_1 x_2 . \]
+	\\
+	\textbf{Solución}. Dado que buscamos los puntos tales que $ [1,0]^T $ es minimizador o maximizador entonces se debe cumplir que
+	\[ \nabla f(1,0) = 0. \]
+	Por un lado,
+	\begin{eqnarray*}
+		\nabla f(x_1, x_2) & = & \left[ \begin{matrix}
+										a^3 e^{x_2} + \dfrac{2a^2}{x_1 + x_2} - (a+2) + 16 x_2 \\
+										a^3 x_1 e^{x^2} + \dfrac{2a^2}{x_1 + x_2} + 8a + 16 x_1
+									\end{matrix} \right]
+	\end{eqnarray*}
+	Luego,
+	\begin{eqnarray*}
+		\nabla f(1, 0) & = & \left[ \begin{matrix}
+									a^3 +2a^2 - (a+2) \\
+									a^3  +2a^2 + 8a + 16
+								\end{matrix} \right] \\
+						   & = & \left[ \begin{matrix}
+								  	a^3 +2a^2 - a - 2 \\
+								  	a^3  +2a^2 + 8a + 16
+								  \end{matrix} \right]
+	\end{eqnarray*}
+	Así que el gradiente de $ f(x_1, x_2) $ es nulo si se cumplen al mismo tiempo
+	\begin{eqnarray*}
+		0 & = & a^3 +2a^2 - a - 2 = (a+2)(a+1)(a-1) \\
+		0 & = & a^3  +2a^2 + 8a + 16 = (a+2) (a^2 + 8)
+	\end{eqnarray*}
+	por lo que la única solución es
+	\[ a = -2. \]
+	Se probará ahora que dicho punto no corresponde a un punto silla. El Hessiano de $ f(x_1, x_2) $ es
+	\begin{eqnarray*}
+		\nabla^2 f(x_1, x_2) & = & \left[\begin{matrix}
+										- \dfrac{2a^2}{(x1 + x_2)^2} & a^3 e^{x_2} - \dfrac{2a^2}{(x_1 + x_2)} + 16 \\
+										a^3 e^{x_2} - \dfrac{2a^2}{(x_1 + x_2)} + 16 & a^3 e^{x_2} - \dfrac{2a^2}{(x_1 + x_2)^2}
+		\end{matrix}\right]
+	\end{eqnarray*}
+	Para $ a = -2 $ y $ x^T = [1,0] $ se tiene
+	\begin{eqnarray*}
+		\nabla^2 f(1, 0) & = & \left[\begin{matrix}
+									- \dfrac{2(-2)^2}{(1 + 0)^2} & (-2)^3 e^{0} - \dfrac{2(-2)^2}{(1 + 0)} + 16 \\
+									(-2)^3 e^{0} - \dfrac{2(-2)^2}{(1 + 0)^2} + 16 & (-2)^3 e^{0} - \dfrac{2(-2)^2}{(1 + 0)^2}
+								\end{matrix}\right] \\
+					     & = & \left[\begin{matrix}
+									- 8 & -8 - 8 + 16 \\
+									-8 - 8 + 16 & -8 -8
+								\end{matrix}\right] \\
+						 & = & \left[\begin{matrix}
+									- 8 & 0 \\
+									0 & -16
+								\end{matrix}\right]	
+	\end{eqnarray*}
+	cuyos valores propios son todos negativos y por lo tanto, dicho punto corresponde a un máximo. 
+\end{problm}
+
+\begin{problm}
+	Considere la sucesión $ x_k = 1 + 1/k! $, $  k = 0,1,\dots $ ¿Converge linealmente a 1? Justifique su respuesta.
+	\\
+	\textbf{Solución}. Sabemos que 
+	\[ \lim_{k \to \infty} \dfrac{1}{k!} = 0. \]
+	Entonces
+	\begin{eqnarray*}
+		\lim_{k \to \infty} x_k & = & \lim_{k \to \infty} \left( 1 + \dfrac{1}{k!} \right) \\
+							   & = & 1 \\
+							   & = & x^*.  
+	\end{eqnarray*}
+	Ahora,
+	\begin{eqnarray*}
+		\dfrac{|| x_{k+1} - x^*||}{|| x_k - x^* ||} & = & \dfrac{|| 1 + \dfrac{1}{(k+1)!} - 1 ||}{|| 1 + \dfrac{1}{k!} - 1 ||} \\
+													& = & \dfrac{ \dfrac{1}{(k+1)!}}{ \dfrac{1}{k!}} \\
+													& = & \dfrac{k!}{ (k+1)!} \\
+													& = & \dfrac{1}{k+1} \\
+													& \to & 0 \textup{, si } k \to \infty.
+	\end{eqnarray*}
+	Por lo que $ \{x_k \} $ converge linealmente a $ 1 $.
+\end{problm}
+
+\begin{problm}
+	Demuestre que $ f (x) = \log \left( \displaystyle \sum_{i = 1}^{n} \exp(x_i) \right) $ es convexa. 
+	\begin{proof}
+		Primero veamos que si
+		\[ f(x) = log (\phi (x)) \]
+		tenemos que
+		\[ \nabla f(x) = \dfrac{1}{\phi (x) } \nabla \phi (x) \]
+		Ahora,
+		\begin{eqnarray*}
+			\nabla^2 f(x) & = & - \dfrac{1}{\phi^2 (x)} \nabla^T \phi (x) \nabla \phi (x) + \dfrac{1}{\phi (x)} \nabla^2 \phi (x) \\
+						  & = & \dfrac{1}{\phi^2 (x)} (\phi (x) \nabla^2 \phi(x) - \nabla^T \phi (x) \nabla \phi (x))
+		\end{eqnarray*}
+		Como 
+		\[ \phi (x) = \sum_{i = 1}^n exp(x_i) > 0,\]
+		para verificar que $ \nabla^2 f(x) $ es definido positivo entonces basta verificar que 
+		\[  A = (\phi (x) \nabla^2 \phi(x) - \nabla^T \phi (x) \nabla \phi (x)) \]
+		es definida positiva.
+		\\
+		Para la función dada
+		\[ \phi (x) = \sum_{i = 1}^n \exp(x_i) \]
+		si $ z = [\exp(x_1), \dots, \exp(x_n)]^T $ entonces
+		\[ \nabla \phi (x) = z \] 
+		y 
+		\[ \nabla^2 \phi(x) = diag(z). \]
+		Sea $ v\in\mathbb{R}^n $ entonces
+		\begin{eqnarray*}
+			v^T A v & = & v^T [\phi (x) \nabla^2 \phi(x) - \nabla^T \phi (x) \nabla \phi (x)]  v \\
+			 & = & v^T [\phi (x) diag(z) - z^T z] v \\
+			& = & v^T \phi (x) diag(z) v - v^T z^T z v \\
+			& = & \phi (x) v^T  diag(z) v - v^T z^T z v \\
+			& = & \phi (x) \left( \sum_{i = 1}^n \exp(x_i) v_i^2 \right) - \left( \sum_{i = 1}^n v_i \exp(x_i) \right)^2
+		\end{eqnarray*}
+		Usando la desigualdad de Cauchy-Swartz tenemos que
+		\[ \left( \sum_{i = 1}^n v_i \exp(x_i) \right)^2 \leq  \sum_{i = 1}^n \exp(x_i) \left( \sum_{i = 1}^n \exp(x_i) v_i^2 \right)  \]
+		Por lo que $ \nabla^2 f(x) $ es definida positiva y por lo tanto, $ f(x) $ es convexa.
+	\end{proof}
+\end{problm}
+
+
+\begin{problm}
+	Demuestre que $ f (x) = \log \left( \displaystyle \sum_{i = 1}^{n} \exp(g_i(x)) \right) : \mathbb{R} \to \mathbb{R} $ es convexa si $ g_i :\mathbb{R} \to \mathbb{R} $ es convexa. 
+	\begin{proof}
+		Sea $ \alpha \in (0,1] $ y $ x,y \in \mathbb{R} $. Sean $ x_1, x_2, \dots, x_n \in \mathbb{R}^{+} $ entonces
+		\begin{equation}\label{exp}
+			\sum_{i = 1}^{n} x_i^{\alpha} = \left( \sum_{i = 1}^n x_i \right)^\alpha
+		\end{equation}  
+		Luego,
+		\begin{eqnarray*}
+			f( \alpha x + (1 - \alpha)y) & = & \log \left( \sum_{i = 1}^n \exp (g_i (\alpha x + ( 1 - \alpha) y)) \right) \\
+			& \leq & \log \left( \sum_{i = 1}^n \underbrace{\exp ( \underbrace{\alpha g_i (x) + ( 1 - \alpha) g_i(y)}_{\textup{convexidad de } g_i })}_{\textup{monotonía de }exp} \right) \\
+			& = & \log \left( \sum_{i = 1}^n \exp ( \alpha g_i ( x)) \exp(( 1 - \alpha) g_i(y)) \right) \\
+			& = & \log \left( \sum_{i = 1}^n \exp (g_i ( x))^{\alpha} \exp(g_i(y))^{1-\alpha} \right) \\
+			& \leq & \log \left( \left( \sum_{i = 1}^n \exp (g_i ( x))\right)^{\alpha} \left( \sum_{i = 1}^n \exp (g_i ( x))\right)^{1 - \alpha} \right) \\
+			& = & \log \left( \left( \sum_{i = 1}^n \exp (g_i ( x))\right)^{\alpha} \right) + \log \left( \left( \sum_{i = 1}^n \exp (g_i ( y))\right)^{1 - \alpha} \right) \\
+			& = & \alpha\log \left( \sum_{i = 1}^n \exp (g_i ( x))\right) + (1 - \alpha) \log \left(  \sum_{i = 1}^n \exp (g_i ( y))\right) \\
+			& = & \alpha f(x) + (1 - \alpha) f(y).
+		\end{eqnarray*}
+	Por lo tanto $ f(x) $ es convexa.
+	\end{proof}
+\end{problm}
+
+\begin{problm}
+	Sea $ f : \mathbb{R}^n \to \mathbb{R} $ una función diferenciable. Demuestre que $ f $ es convexa sobre un conjunto convexo no vacío $ C $ si y sólo si
+	\[ (\nabla f(x) - \nabla f(y))^T (x - y) \geq 0, \forall x, y \in C \]
+	Nota: la prueba que tenemos es solo para el caso $ (\to )$.
+	\begin{proof}
+		Suponga que 
+		\[ (\nabla f(x) - \nabla f(y))^T (x - y) \geq 0, \forall x, y \in C \]
+		en particular, si $ \alpha\in(0,1] $ y se toman $ x,y\in C $, se tiene que 
+		\[x + \alpha (y-x) \in C\] 
+		y así
+		\begin{eqnarray*}
+			0 & \leq & (\nabla f(x + \alpha (y - x)) - \nabla f(x))^T (x + \alpha (y - x) - x) \\
+			  &   =  & \alpha (\nabla f(x + \alpha (y - x)) - \nabla f(x))^T (y - x) 
+		\end{eqnarray*}
+		Dado que, por construcción, $ \alpha > 0 $ entonces
+		\begin{equation}\label{mono}
+			\nabla^T f(x + \alpha (y - x))(y - x) \geq \nabla^T f(x) (y-x) 
+		\end{equation}
+		Ahora, sea
+		\[ \phi (\alpha) = f (x + \alpha (y - x)), \alpha\in(0,1]. \]
+		Notemos que
+		\begin{equation} \label{deriv}
+			\phi ' (\alpha) = \nabla^T f(x + \alpha (y - x)) (y-x).
+		\end{equation}
+		y además
+		\begin{eqnarray*}
+			\phi (1) & = & f( x + (y-x)) \\
+					 & = & f(y). \\
+			\phi (0) & = & f(x + 0(y-x)) \\
+			         & = & f(x).
+		\end{eqnarray*}
+		Luego, por el Teorema Fudnamental del Cálculo para $ \phi(\alpha) $ tenemos que
+		\begin{eqnarray*}
+			f(y) - f(x) & = & \phi ( 1 ) - \phi (0) \\
+			            & = & \int_{0}^{1} \phi ' (\alpha) d \alpha \\
+			            & = & \int_{0}^{1} \underbrace{\nabla^T f(x + \alpha (y - x)) (y-x)}_{(\ref{deriv})} d \alpha \\ 
+			            & \geq & \int_{0}^{1} \underbrace{\nabla^T f(x) (y-x)}_{(\ref{mono})} d \alpha \\ 
+			            & = & \nabla^T f(x) (y-x) \int_{0}^{1} d \alpha \\ 
+			            & = & \nabla^T f(x) (y-x). 
+		\end{eqnarray*}
+		entonces
+		\[ f(y) - f(x) \geq \nabla^T f(x) (y-x) \]
+		pero este último enunciado es equivalente a que $ f(x) $ sea convexa.
+	\end{proof}
+\end{problm}
+\end{document}

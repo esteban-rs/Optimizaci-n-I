@@ -1,0 +1,545 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,USenglish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{flushend}
+\usepackage{pgf,tikz, pgfplots}
+\usetikzlibrary{arrows}
+\pgfplotsset{compat=1.15}
+\usepackage{pgf,tikz,pgfplots}
+%escribir programas
+\usepackage{listings}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+%encabezado
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\thepage} % Números de página en las esquinas de los encabezados
+%%%%%%%%%%%%%%%%%%%% BOXES %%%%%%%%%%%%%%%%%%%
+\usepackage{bm}
+\newcommand{\commentedbox}[2]{%
+	\mbox{
+		\begin{tabular}[t]{@{}c@{}}
+			$\boxed{\displaystyle#1}$\\
+			#2
+		\end{tabular}%
+	}%
+}
+\usepackage{framed}
+\usepackage{wrapfig}\definecolor{shadecolor}{RGB}{224,238,238}
+%%%%%%%%%%%%%%%%%%%%%%%%% DEFINITIONS %%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{defi}{Definición}[section]%Para definiciones
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}[section]%Para definiciones
+\newtheorem{prop}{Proposición}
+\theoremstyle{definition}
+\newtheorem{ej}{Ejemplo}[section]
+\newtheorem{lem}{Lema}
+\newtheorem{prblm}{Problema}
+\newtheorem{col}{Corolario}[section]
+
+
+
+\title{\textbf{Tarea 7: Método de Región de Confianza}\\ Optimización I \\ \Large {Maestría en Computación}\\ \Large {Centro de Investigación en Matemáticas}}
+\author{Esteban Reyes Saldaña \\ esteban.reyes@citmat.mx}
+
+\begin{document}
+
+\selectlanguage{spanish}
+\twocolumn[
+\begin{@twocolumnfalse}
+	\maketitle
+	\begin{center}\rule{0.9\textwidth}{0.1mm} \end{center}
+	\begin{abstract}
+		\normalsize{En esta tarea se implementó el esquema general del método de Región de Confianza para la función de Rosembrock, la función de Wood y la función de Branin. El método de región de confianza busca un paso dentro de una bola de radio $ r $ que minimice al modelo cuadrático de una función dada. A diferencia de búsqueda en línea, este método obtiene la direccióny el tamaño de paso de manera simultánea. Se presenta a continuación una descripción general, así como el pseudocódigo de los métodos implementados. Finalmente se incluyen conclusiones observadas a partir de la experimentación.}
+	\begin{center}\rule{0.9\textwidth}{0.1mm} \end{center}
+	\end{abstract}
+\end{@twocolumnfalse}]
+
+\section{Introducción}
+Los métodos de región de confianza, similar a los métodos de búsqueda en línea, para generar los pasos se basan en un modelo que aproxima a la función objetivo. En cada iteración, definen una región en la cual se confía que el modelo se ajusta bien a la función, a esta región se le llama \textbf{región de confianza}. El paso se calcula como un minimizador aproximado del modelo, $ m_k (p) $ restringido a la región de confianza $ (\mathcal{R}_c) $
+\begin{shaded*}
+\[ p_k = \arg\min_p m_k (p) \textup{ s.t } p \in \mathcal{R}_c \]
+\end{shaded*}
+La \textbf{dirección de descenso} y el \textbf{tamaño de paso} se calculan al mismo tiempo, diferente a los métodos de búsqueda en línea que primero se buscan una dirección de descenso y luego el tamaño de paso. Así que la actualización queda dada por
+\begin{shaded*}
+\[ x_{k+1} = x_k + p_k \]
+\end{shaded*}
+Si el paso obtenido usando el método de región de confianza no produce un progreso en la minimización entonces el paso \textbf{no es aceptado}. Lo anterior es un indicativo de que el modelo no se ajustó bien a la función en la región de confianza y entonces se reduce el tamaño de la region de confianza y se recalcula
+el paso usando la nueva región de confianza.
+\subsection{¿Qué se necesita?}
+\begin{shaded*}
+	\begin{itemize}
+		\item un modelo.
+		\item Radio o tamaño de la región de confianza.
+		\item Una medida para evaluar el ajuste del modelo en la región de confianza.
+	\end{itemize}
+\end{shaded*}
+\subsection{El Modelo}
+Se asumirá que el modelo $ m_k $ que será usado en la iteración $ x_k $ es cuadrático usando la expansión de Taylor de segundo orden, entonces
+\begin{shaded*}
+	\[f(x_k + p) = f(x_k) + \nabla f(x_k)^T p + \dfrac{1}{2} p^T \nabla^2 f(x_k + tp) p \]
+	con $ t \in (0,1). $ Si el modelo toma una aproximación del Hessiano $ B_k $ entonces 
+	\[m_k(p) = f(x_k) + \nabla f(x_k)^T p + \dfrac{1}{2} p^T B_k p \]
+	sujeto a $ ||p|| \leq \Delta_k $.
+\end{shaded*}
+En general, la solución del problema puede ser muy difícil. En la práctica no se necesita resolver completamente el problema anterior y, por lo general, una solución
+aproximada al problema anterior es suficiente.
+\\
+Un elemento importante en los métodos de región de confianza es la forma de calcular el radio $ \Delta_k $ en cada iteración. Para ello se calcula la siguiente medida del ajuste
+\begin{shaded*}
+	\[ \rho_k = \dfrac{f(x_k) - f(x_k + p_k)}{m_k (0) - m_k (p_k)} \]
+	donde el numerador representa la \textbf{reducción en la función} y el denominador \textbf{la reducción en el modelo.}
+\end{shaded*}
+\textbf{Nota}. La reducción del modelo siempre es positiva, dado que $ p_k $ minimiza al modelo. Entonces
+\begin{enumerate}
+	\item Si $ \rho_k < 0 $ entonces $ f(x_k) < f (x_k + p_k) $ y la función se incrementa, por lo que se debe \textbf{rechazar} el paso $ p_k $.
+	\item Si $ \rho_k \sim 1 $ entonces el comportamiento de la función y el
+	modelo concuerdan bastante bien en esta iteración, y es buena idea incrementar el radio de la región de confianza en la próxima iteración.
+	\item Si $ 0 \leq \rho _k < 1 $ pero cercano a $ 1 $ entonces no se modifica el radio $ \Delta_k $ en la próxima iteración.
+	\item Si $ \rho _k < 0 $ entonces se reduce el $ \Delta_k $ en la próxima iteración, puesto que la función incrementó su valor o el ajuste del modelo no es bueno.
+\end{enumerate}
+
+\subsection{¿Cómo calcular el paso?}
+\begin{shaded*}
+	\begin{teo}
+		El vector $ p^* $ es una solución global del problema
+		\[ \min_p m_k (p) = f(x_k) + g^T p + \dfrac{1}{2} p^T B p \]
+		s.t. $ ||p|| \leq \Delta $ si y sólo si $ p^* $ es factible y existe $ \lambda > 0 $ y además se cumplen las condiciones
+		\begin{eqnarray*}
+			(B + \lambda I) p^*       &   =  & - g \\
+			\lambda (|p^*|| - \Delta) &   =  & 0 \\
+			B + \lambda I             & \geq & 0. 
+		\end{eqnarray*}
+	\end{teo}
+\end{shaded*}
+Observaciones
+\begin{itemize}
+	\item  Una alternativa para aproximar la solución del problema anterior se basa en el punto de Cauchy.
+\\
+	\item  Una estrategia de aproximación es el método dogleg, el cual es una aproximación cuando $ B_k $ es definida positiva.
+\end{itemize}
+
+
+
+
+\section{Método}
+\subsection{Punto de Cauchy}
+\begin{shaded*}
+	El \textbf{punto de Cauchy} es el minimizador del modelo $ m_k $ a lo largo de la dirección del máximo descenso de la función, i.e., $ -\nabla f(x_k) $, sujeto a la región de confianza.
+\end{shaded*}
+ara hallar el paso, se resuelve el problema de opimimización con restricciones
+\[ p_k^* = \arg\min_p m_k(p) = f(x_k) + \nabla f(x_k)^T p + \dfrac{1}{2} p^T B_k p, \]
+st. $ || p || \leq \Delta_k $ donde $ \Delta_k $ es el radio de la región de confianza. El Punto de Cauchy, denotado como $ p_k^C $, nos permite cuantificar el suficiente descenso del modelo. 
+\begin{shaded*}
+	\begin{enumerate}
+		\item Encontrar el punto $ p_k^S $ que resuelva la versión lineal
+		\[ p_k^S = \arg \min_p f(x_k) + \nabla f(x_k)^T p \]
+		s.t. $ ||p|| \leq \Delta_k $.
+		\item Encontrar el parámetro $ \tau_k $ que minimiza $ m_k(\tau_k p_k^S) $ en la región de confianza, i.e., 
+		\[ \tau_k = \arg\min_{\tau\geq 0} m_k (\tau p_k^S) \]
+		s.t. $ || \tau p_k^S || \leq \Delta_k $.
+		\item Calcular el punto de Cauchy haciendo 
+		\[ p_k^C = \tau_k p_k^S \]
+	\end{enumerate}
+\end{shaded*}
+\subsection{Resolver el problema Lineal}
+\begin{shaded*}
+	Encontrar el punto $ p_k^S $ que resuelva la versión lineal
+	\[ p_k^S = \arg \min_p f(x_k) + \nabla f(x_k)^T p \]
+	s.t. $ ||p|| \leq \Delta_k $.
+\end{shaded*}
+Sabemos que la función decrece a lo largo de $ -\nabla f(x_k)^T $ luego $ p_k^S = -\lambda \nabla f(x_k) $ con $ \lambda > 0 $. Como $ ||p_k^S|| \leq \Delta_k $ entonces $ \lambda \leq \dfrac{\Delta_k}{|| \nabla f(x_k) || } $. Así que el \textbf{máximo descenso} se obtiene para $ \lambda = \dfrac{\Delta_k}{|| \nabla f(x_k) || } $, por lo que 
+\begin{shaded*}
+	\begin{equation}
+		p_k^S = - \dfrac{\Delta_k}{|| \nabla f(x_k) || } \nabla f(x_k).
+	\end{equation}
+\end{shaded*}
+\subsection{Encontrar $ \tau $}
+\begin{shaded*}
+	Encontrar el parámetro $ \tau_k $ que minimiza $ m_k(\tau_k p_k^S) $ en la región de confianza, i.e., 
+	\[ \tau_k = \arg\min_{\tau\geq 0} m_k (\tau p_k^S) \]
+	s.t. $ || \tau p_k^S || \leq \Delta_k $.
+\end{shaded*}
+\begin{itemize}
+	\item Si $ \nabla f(x_k)^T B_k \nabla f(x_k) \leq 0 $ entonces $ m_k(\tau_k p_k^S) $ decrece a lo largo de $ p_k^S $, i.e., del $ -\nabla f(x_k) $ y se toma a $ \tau $ como el mayor valor posible, es decir, $ \tau = 1 $.
+	\item Si $ \nabla f(x_k)^T B_k \nabla f(x_k) > 0 $ entonces $ m_k(\tau_k p_k^S) $ es una función cuadrática convexa en $ \tau $. Si el mínimo se alcanza en el interior de la región de confianza entonces
+	\[ \tau = \dfrac{|| \nabla f(x_k) ||^ 3}{\nabla f(x_k)^T B_k \nabla f(x_k)}. \]
+	En caso contrario la solución está en la frontera, $ \tau = 1 $ similar al caso anterior.
+\end{itemize}
+\subsection{Dogleg}
+El Paso de Cauchy produce un suficiente descenso en el modelo $ m_k(\cdot) $ lo que permite obtener convergencia global.
+Teniendo en cuenta que usar
+el Paso de Cauchy es equivalente a usar el Método del Máximo descenso con un tamaño de paso particular, el método de Dogleg utiliza la información dada por el Hessiano para mejorar la solución.
+\\
+Una estrategia simple es calcular el paso completo
+\[ p_k^B = - B_k^{-1} \nabla f_k \]
+siempre que $ B_k $ sea definida positiva. 
+\\
+El método de Dogleg minimiza el modelo cuadrático sin restricciones a lo largo del gradiente 
+\begin{shaded*}
+	\[ p_k^U = \alpha \nabla f_k \]
+\end{shaded*}
+minimiza el modelo cuadrático sin restricciones si $ B_k $ es positiva definida
+\begin{shaded*}
+	\[ p_k^B = -B_k^{-1} \nabla f_k \]
+\end{shaded*}
+Luego calcula el tamaño de paso
+\[ p_k = F(p_k^U, p_k^B) \]
+i.e., el tamaño de paso es una función que depende del paso completo y de la dirección de máximo descenso.
+\subsection{Minimizar el Modelo cuadrático}
+Si $ p_k^U = \alpha \nabla f_k $, se busca llahar el tamaño de paso $ \alpha $ del problema cuadrático sin restricciones. De donde
+\begin{equation*}
+	\alpha^* = - \dfrac{\nabla^T f_k \nabla f_k}{\nabla^T f_k B_k \nabla f_k}
+\end{equation*}
+Así que
+\begin{shaded*}
+	\begin{eqnarray}
+		p_k^U & = & - \dfrac{\nabla^T f_k \nabla f_k}{\nabla^T f_k B_k \nabla f_k} \nabla f_k \\
+		p_k^B & = & - B_k^{-1} \nabla f_k.
+	\end{eqnarray}
+\end{shaded*}
+Ahora el problema consiste en contrar el \textbf{paso óptimo} que minimiza el problema cuadrático con restricciones en la trayectoria Dogleg, es decir, en
+\begin{shaded*}
+	\begin{equation}
+		\hat{p}(\tau) = \left\{\begin{matrix}
+							\tau p_k^U & \textup{ si } 0 \leq \tau \leq 1 \\
+							p_k^U + (\tau -1) (p_k^B - p_k^U) & \textup{ si } 1 \leq \tau \leq 2.
+						\end{matrix}\right.
+	\end{equation}
+\end{shaded*}
+Se sabe que
+\begin{itemize}
+	\item $ Si || p_k^B || \leq \Delta_k $ entonces el tamaño de paso óptimo es
+	\[ p_k = p_k^B \]
+	puesto que $ m(\hat{p}(\tau)) $ decrece a lo largo del camino Dogleg.
+	\item En otro caso, hay que hallar el intercepto entre la trayectoria de Dogleg y la región de confianza.
+	\begin{itemize}
+		\item Si $ || p_k^U|| \geq  \Delta_k $ entonces $ p_k = p_k^C $.
+		\item De lo contrario se tiene que resolver la siguiente ecuación para $ \tau $
+		\[ || p_k^U + (\tau -1) (p_k^B - p_k^U) || ^2 = \Delta^2 \] 
+	\end{itemize}
+\end{itemize}
+Finalmente
+\begin{shaded*}
+	\begin{equation}
+	p_k = \left\{\begin{matrix}
+		\tau^* p_k^U & \textup{ si } 0 \leq \tau^* \leq 1 \\
+		p_k^U + (\tau^* -1) (p_k^B - p_k^U) & \textup{ si } 1 \leq \tau^* \leq 2.
+	\end{matrix}\right.
+\end{equation}
+\end{shaded*}
+\subsection{Pseudocódigo}
+\subsubsection{Región de Confianza}
+\begin{shaded*}
+	\begin{algorithmic}[1]
+		% ENTRADA / SALIDA
+		\Require{punto inicial $ x_0 $, $ \hat{\Delta} > 0 $, $ \Delta_0 \in (0, \hat{\Delta}) $ y $ \eta \in [0, \eta_1] $}
+		\Require{$ \eta_1, \eta_2 , \hat{\eta}_1 , \hat{\eta}_2 $}
+		\State{Obtener solución aproximada del modelo cuadrático con restricciones}
+		\State{Se calcula medida de confianza $ \rho_k $}
+		\If{$ \rho_k < \eta_1 $ entonces $ \Delta_{k+1} = \hat{\eta}_1 \Delta_k $}
+		\Else 
+			\If{$ \rho_k > \eta_2 $ y $ || \rho_k || = \Delta_k $}
+				\State{$ \Delta_{k+1} = \min\{ \hat{\eta}_2 \Delta_k, \hat{\Delta} \} $}
+			\Else
+				\State{$ \Delta_{k+1} = \Delta_k $}
+			\EndIf
+		\EndIf
+		\If{$ \rho_k > \eta $ entonces $ x_{k+1} = x_k + p_k $}
+		\Else 
+			\State{$ x_{k+1} = x_k $}
+		\EndIf
+	\end{algorithmic}
+\end{shaded*}
+
+\subsubsection{Paso de Cauchy}
+\begin{shaded*}
+	\begin{algorithmic}[1]
+		% ENTRADA / SALIDA
+		\Require{gradiente $ g_k $, hessiano $ b_k $ y radio de confianza $ \Delta_k $}
+		\Ensure{paso $ p_k $}
+		\State{$ p_k^S = - \dfrac{\Delta_k}{|| \nabla f(x_k) ||  } \nabla f(x_k) $}
+		
+		\If{$ g_k^T b_k g_k \leq 0 $}
+			\State{$\tau_k = 1 $}
+		\Else
+			\State{$\tau_k = - \min \left( 1, \dfrac{|| g_k || ^3}{\Delta_k  g_k^T b_k g_k } \right)$}
+		\EndIf
+		\State{$ p_k = \tau_k p_k^S $}
+	\end{algorithmic}
+\end{shaded*}
+
+\subsubsection{Paso Dogleg}
+\begin{shaded*}
+	\begin{algorithmic}[1]
+		% ENTRADA / SALIDA
+		\Require{gradiente $ g_k $, hessiano $ b_k $ y radio de confianza $ \Delta_k $}
+		\Ensure{paso $ p_k $}
+		\State{$ p_k^U = - \dfrac{g_k^T g_k}{g_k^T b_k g_k} g_k $}
+		\State{$ p_k^B = -b_k^{-1} g_k $}
+		\If{$ || p_k^B || \leq \Delta_k $}
+			\State{$ p_k = p_k^B $}
+		\ElsIf{$ p_k^U \geq \Delta_k $}
+			\State{$ p_k =  - \dfrac{\Delta_k}{||p_k^U||} p_k^U $}
+		\Else
+			\State{$ d_f = p_k^B - p_k^U $}
+			\State{$ a = d_f^T d_f $}
+			\State{$ b = 2 * p_k^{BT} d_f $}
+			\State{$ c = p_k^{UT} p_k^U - \Delta_k^2 $}
+			\State{$ \tau_k = 1 + \dfrac{-b + \sqrt{b^2 - 4ac}}{2 a} $}
+			\If{$ \tau_k \leq 1 $}
+				\State{$ p_k = \tau_k p_k^U $}
+			\Else
+				\State{$ p_k = p_k^U + (\tau_k - 1) d_f $}
+			\EndIf
+		\EndIf
+	\end{algorithmic}
+\end{shaded*}
+
+\subsection{Función de Rosembrock}
+\begin{shaded*}
+\[ f(x) = \sum_{i = 1}^{N-1} [100(x_{i+1} - x_i^2)^2 + (1 - x_i)^2] \]
+donde $ x = [ x_1, \dots, x_N ]^T \in\mathbb{R}^N $.
+\end{shaded*}
+\textbf{Gradiente}.  Primero notemos que  para $ 2 \leq j \leq N-1 $ se puede reescribir $ f(x) $ como
+\begin{eqnarray*}
+	f(x) & = & \sum_{i = 1}^{j-2}  [100(x_{i+1}- x_i^2)^2 + (1-x_i)^2] \\
+	     &   &  + [100(x_{j} - x_{j-1}^2)^2 + (1-x_{j-1})^2] \\
+	&   & [100(x_{j+1} - x_{j}^2)^2 + (1-x_{j})^2] \\
+	&   & +  \sum_{i = j+1}^{N-1} [100(x_{i-1} - x_i^2)^2 - (1-x_i)^2 ]. \\
+\end{eqnarray*}
+Notemos que el primer y útlimo término son constantes con respecto a $ x_j $, entonces se anularán al calcular la correspondiente derivada parcial.
+\\
+Para $ D_1 $ se tiene que
+\begin{eqnarray*}
+	\dfrac{\partial }{\partial x_1} f(x) & = & 100(2)(x_2 - x_1^2) (-2x_1) - 2(1-x_1)  \\
+	& = &  -400(x_2 - x_1^2)x_1 - 2(1-x_1).
+\end{eqnarray*}
+Para $ D_j \in\{ 2, \dots, N-1 \} $,
+\begin{eqnarray*}
+	\dfrac{\partial }{\partial x_j} f(x) & = & [200(x_j - x_{j-1}^2)] + [ 200(x_{j+1} - x_j^2)(-2x_j)] \\
+	& & - [2(1-x_j) ] \\
+	& = & 200(x_j - x_{j-1}^2) - 400 (x_{j+1} - x_j^2) x_j  \\
+	& & - 2(1-x_j)
+\end{eqnarray*}
+Para $ D_N $, 
+\begin{eqnarray*}
+	\dfrac{\partial }{\partial x_N} f(x) & = & 200(x_N - x_{N-1}^2).
+\end{eqnarray*}
+De lo anterior tenemos que
+\begin{shaded*}
+\footnotesize{
+\begin{equation*}
+	\nabla f(x)  =  \left[\begin{matrix}
+		-400(x_2 - x_1^2) x_1 - 2(1-x_1) \\
+		\vdots							 \\
+		200(x_j - x_{j-1}^2) - 400(x_{j+1} - x_j^2)x_j - 2(1-x_j)					 \\
+		\vdots  						 \\
+		200(x_N - x_{N-1}^2).
+	\end{matrix}\right]
+\end{equation*}}
+\end{shaded*}
+\textbf{Hessiano}. Para calcular el Hessiano, se debe considerar como casos particulares, aquellos que se apliquen a $ \dfrac{\partial f(x) (x)}{\partial x_1} $ y $ \dfrac{\partial f(x) (x)}{\partial x_N} $ (como se observó en el gradiente). 
+\\
+Para $ D_{x_k x_1 } $,
+\begin{eqnarray*}
+	\dfrac{\partial^2 f(x)}{\partial x_k \partial x_1} = \left\{\begin{matrix}
+		1200x_1^2 -400 x_2 +2 & si & k = 1 \\
+		-400x_1				  & si & k = 2 \\
+		0					  & e.o.c &
+	\end{matrix}\right.
+\end{eqnarray*}
+Para $ D_{x_k x_j} $ con $ j \in\{ 2,\dots, N-1 \} $,
+\begin{eqnarray*}
+	\dfrac{\partial^2 f(x)}{\partial x_k \partial x_j} = \left\{\begin{matrix}
+		1200x_j^2 -400 x_2 +2 & si & k = j   \\
+		-400x_j				  & si & k = j+1 \\
+		-400 x_{j-1}          & si & k = j-1 \\
+		0					  & e.o.c &
+	\end{matrix}\right.
+\end{eqnarray*}
+Para $ D_{x_k x_N} $,
+\begin{eqnarray*}
+	\dfrac{\partial^2 f(x)}{\partial x_k \partial x_1} = \left\{\begin{matrix}
+		-400 x_{N-1} & si & k = N - 1 \\
+		200		     & si & k = N \\
+		0					  & e.o.c &
+	\end{matrix}\right.
+\end{eqnarray*}
+Así que el Hessiano tiene la forma
+\begin{shaded}
+\tiny{\begin{eqnarray*}
+	H(x) = \left( \begin{matrix}
+		1200x_1^2 -400 x_2 +2  &          -400 x_1         & \dots  & 0 \\
+		         -400 x_1      & 1200x_2^2 - 400 x_3 + 202 & \dots  & 0 \\
+		         \vdots        &            \vdots         & \vdots & \vdots \\
+		            0          &               \dots       & -400x_{N-1} & 200
+	\end{matrix} \right).
+\end{eqnarray*}}
+\end{shaded}
+
+\subsection{Función de Wood}
+Para $ n = 4 $ esta función está dada por
+\begin{shaded*}
+	\begin{eqnarray*}
+		f(x) & = & 100 (x_1^2 - x_2)^2 + (x_1 - 1)^2 \\
+			 &   & + (x_3 - 1)^2 + 90 (x_3^2 - x_4)^2 \\
+		  	 &   & + 10.1 [ (x_2 -1)^2 + (x_4 -1)^2 ] \\
+		  	 &   & + 19.8 (x_2 -1) (x_4 -1).
+	\end{eqnarray*}
+\end{shaded*}
+\textbf{Gradiente}. Derivando respecto a cada entrada obtenemos
+\begin{shaded*}
+\begin{eqnarray*}
+	\dfrac{\partial f(x)}{\partial x_1} & = & 400(x_1^2 - x_2) x_1 + 2(x_1 - 1) \\
+	\dfrac{\partial f(x)}{\partial x_2} & = &-200(x_1^2 - x_2) + 20.2 (x_2 - 1) \\
+										&   & + 19.8 (x_4 - 1) \\
+	\dfrac{\partial f(x)}{\partial x_3} & = & 2(x_3 - 1) + 360 (x_3^2 - x_4) x_3 \\
+	\dfrac{\partial f(x)}{\partial x_4} & = & -180 (x_3^2 - x_4)+ 20.2 (x_4 - 1)  \\
+										&   & +19.8(x_2 -1).
+\end{eqnarray*}
+\end{shaded*}
+\textbf{Hessiano}
+\begin{shaded*}
+\tiny{\begin{equation*}
+	H_f (x) = \left[\begin{matrix}
+					1200 x_1^2 - 400 x_1 + 2 & -400 x_1 & 0 & 0 \\
+					-400 x_1                 & 220.2    & 0 & 19.8 \\
+					0                        & 0        & 1080x_3^2 - 360x_4 + 2 & -360x_3 \\
+					0 & 19.8 & -360 x_3 & 2020.2. 
+					 
+	\end{matrix}\right]
+\end{equation*}}
+\end{shaded*}
+
+\subsection{Función de Branin}
+Para $ n = 2 $ esta función está dada por
+\begin{shaded*}
+	\begin{eqnarray*}
+		f(x) & = & a(x_2 - b x_1^2 + cx_1 - r)^2 \\
+			 &   & + s(1-t) \cos(x_1) +s.
+	\end{eqnarray*}
+\end{shaded*}
+\textbf{Gradiente}. Derivando respecto a cada entrada obtenemos
+\begin{shaded*}
+	\begin{eqnarray*}
+		\dfrac{\partial f(x)}{\partial x_1} & = & 2a(x_2 - bx_1 +cx_1-r)(-2bx_1+c)  \\
+											&   & -s(1-t) sen(x_1) \\
+		\dfrac{\partial f(x)}{\partial x_2} & = & 2a(x_2 -bx_1 + cx_1 -r) 
+	\end{eqnarray*}
+\end{shaded*}
+\textbf{Hessiano}
+\begin{shaded*}
+	\scriptsize{\begin{equation*}
+			H_f (x) = \left[\begin{matrix}
+				\begin{matrix}
+					4ab(x_2 -bx_1^2 +cx_1-r) \\
+					+ 2a(-2bx_1 +c)^2 - s(1-t)cos(x_1) \\
+					
+				\end{matrix}  & 2a(-2bx_1 +c) \\
+				2a(-2bx_1 +c)            & 2a			
+			\end{matrix}\right]
+	\end{equation*}}
+\end{shaded*}
+
+\section{Resultados}
+Se eligieron los parámetros
+\begin{center}
+	\begin{tabular}{ccccc}
+		\hline
+		Parámetro & $ max_{iter} $ & $ \tau_x $ & $ \tau_f $ & $ \tau_{grad} $ \\
+		\hline
+		 Valor    &      10000     & $ 10^{-12} $ & $ 10^{-12} $ & $ 10^{-12} $  \\
+		\hline
+	\end{tabular}
+\end{center}
+Para la Región de Confianza se usaron los parámetros
+\begin{center}
+	\begin{tabular}{cc}
+		\hline
+		Parámetro & Valor \\
+		\hline
+		$ \Delta_k $   & 0.1 \\
+		$ \Delta_{max} $ & 0.2 \\
+		$ \eta $       & 0.1 \\
+		$ \eta_1 $     & 0.25 \\
+		$ \eta_2 $     & 0.75 \\
+		$ \hat{\eta}_1 $ & 0.25 \\
+		$ \hat{\eta}_2 $ & 2 \\
+		\hline
+	\end{tabular}
+\end{center}
+\subsection{Función de Branin}
+Para esta función se usaron los valores
+\begin{center}
+	\begin{tabular}{cc}
+		\hline
+		Parámetro & Valor \\
+		\hline
+		$ a $ & 1 \\
+		$ b $ & $ \frac{5.1}{4 \pi^2} $ \\
+		$ c $ & $ \frac{5}{\pi} $ \\
+		$ r $ & 6 \\
+		$ s $ & 10 \\
+		$ t $ & $ \frac{1}{8 \pi} $ \\
+		\hline
+	\end{tabular}
+\end{center}
+El experimento se repitió $ 30 $ veces usando puntos iniciales aleatorios de la forma
+\[ x_0 = [x_0^1 + \eta_1, x_0^2 + \eta_2, \dots, x_0^n + \eta_n] \]
+donde $ \eta_k \sim \mathcal{U}(-1,1) $. 
+
+
+\twocolumn[
+\begin{@twocolumnfalse}
+	Los resultados para el promedio de tiempo fueron
+	\begin{center}
+		\begin{tabular}{cccc}
+			\hline
+			Algoritmo &           Dogleg & Newton-Cauchy Alterno & Newton Modificado \\
+			\hline
+			Rosembrock & 0.2503 segundos & 0.2154 segundos        & 2.3138 segundos                   \\
+			Wood       & 0.0294 segundos &  0.0294 segundos & 0.0548 segundos  \\
+			Branin     & 0.0074 segundos &  0.006 segundos & 0.0630 segundos  \\
+			\hline
+		\end{tabular}
+	\end{center}
+	Los resultados para el promedio de iteraciones fueron
+	\begin{center}
+		\begin{tabular}{cccc}
+			\hline
+			Algoritmo & Dogleg & Newton-Cauchy Alterno & Newton Modificado \\
+			\hline
+			Rosembrock & 89.50         & 83.53  & 447.00            \\
+			Wood       & 117.96        & 126.36 & 163.16              \\
+			Branin     & 28.60         & 28.03  & 358.80   \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{@twocolumnfalse}]
+\section{Conclusiones}
+	\subsection{Dogleg}
+	El paso de dogleg incorpora una dependencia al paso de Cauchy del Hessiano o paroximación del Hessiano $ B_k $. Minimiza el modelo cuadrático sin restricciones a lo largo del gradiente y usando el modelo cuadrático sin restricciones si $ B_k $ es positiva definida. Luego calcula el paso $ p_k $. 
+	\\
+	Para las funciones utilizadas se observó que la convergencia no siempre es global, esto se debe al radio de la región de confianza. Podría tomarse un $ \Delta_k $ más grande que el que se usó para las pruebas y revisar si se llega al óptimo global. Sin embargo, mostró mayor eficiencia comparado con el método de Newton Modificado.
+	\\
+	Se observó que la convergencia depende fuertemente del punto inicial y que en casi todas las iteraciones se llega al óptimo global. Excepto en la función de Rosembrock, justo como se observó en tareas pasadas.
+	
+	\subsection{Newton-Cauchy Alternado}
+	Este método, a diferencia de las búsquedas en línea, calcula la dirección y el tamaño de paso simultáneamente. El radio de la región de confianza se incrementa solo si concuerda con el modelo de la función y se reduce sólo si la función incrementa su valor.
+	\\
+	En la experimentación se observó que el costo computacional es bajo respecto al tiempo y las iteraciones comparado con el método de Newton Modificado. Además se observó que la convergencia fue global para las funciones probadas excepto para la función de Rosembrock. 
+	\\
+	En general, los métodos de región de confianza mostraron un menor tiempo de ejecución y un menor número de iteraciones comparados con Newton Modificado.
+\end{document}

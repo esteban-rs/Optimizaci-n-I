@@ -1,0 +1,402 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,USenglish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{flushend}
+\usepackage{pgf,tikz, pgfplots}
+\usetikzlibrary{arrows}
+\pgfplotsset{compat=1.15}
+\usepackage{pgf,tikz,pgfplots}
+%escribir programas
+\usepackage{listings}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+%encabezado
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\thepage} % Números de página en las esquinas de los encabezados
+%%%%%%%%%%%%%%%%%%%% BOXES %%%%%%%%%%%%%%%%%%%
+\usepackage{bm}
+\newcommand{\commentedbox}[2]{%
+	\mbox{
+		\begin{tabular}[t]{@{}c@{}}
+			$\boxed{\displaystyle#1}$\\
+			#2
+		\end{tabular}%
+	}%
+}
+\usepackage{framed}
+\usepackage{wrapfig}\definecolor{shadecolor}{RGB}{224,238,238}
+%%%%%%%%%%%%%%%%%%%%%%%%% DEFINITIONS %%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{defi}{Definición}[section]%Para definiciones
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}[section]%Para definiciones
+\newtheorem{prop}{Proposición}
+\theoremstyle{definition}
+\newtheorem{ej}{Ejemplo}[section]
+\newtheorem{lem}{Lema}
+\newtheorem{prblm}{Problema}
+\newtheorem{col}{Corolario}[section]
+
+
+
+\title{\textbf{Tarea 6: Método de Newton y Newton Modificado}\\ Optimización I \\ \Large {Maestría en Computación}\\ \Large {Centro de Investigación en Matemáticas}}
+\author{Esteban Reyes Saldaña \\ esteban.reyes@citmat.mx}
+
+\begin{document}
+
+\selectlanguage{spanish}
+\twocolumn[
+\begin{@twocolumnfalse}
+	\maketitle
+	\begin{center}\rule{0.9\textwidth}{0.1mm} \end{center}
+	\begin{abstract}
+		\normalsize{En esta tarea se utilizó el método de Newton y el método de Newton modificado para la función de Rosembrock y la función de Wood. El método de Newton busca una dirección de descenso haciendo uso de un sistema lineal entre el Hessiano el gradiente. El método de Newton modificado intenta encontrar una mejor aproximación de dicho sistema lineal haciend una modificación para que la matriz Hessiana sea definida positiva. Se presenta a continuación una descripción general, así como el pseudocódigo de los métodos implementados. Finalmente se incluyen conclusiones observadas a partir de la experimentación.}
+	\begin{center}\rule{0.9\textwidth}{0.1mm} \end{center}
+	\end{abstract}
+\end{@twocolumnfalse}]
+
+\section{Introducción}
+\begin{shaded*}
+\begin{defi}
+	Una \textbf{dirección de descenso} $ d \in \mathbb{R}^n $ para $ f \in \mathcal{C}^1 $ es un vector tal que
+	\[ f(x + t d) < f(x) \]
+	para $ t \in (0, T) $. Es decir, permite que el punto $ x $ más cerca al mínimo local $ x^* $ de la función objetivo $ f: \mathbb{R}^n \to \mathbb{R} $.
+\end{defi}
+\end{shaded*}
+
+\begin{shaded*}
+\begin{teo}
+	Si $ g(x)^T d < 0 $ entonces $ d $ es una dirección de descenso.
+\end{teo}
+\end{shaded*}
+\textbf{Observación.} La dirección 
+\[ d_k = - g(x_k) \]
+En descenso Gradiente con búsqueda exacta se vio que
+\begin{itemize}
+	\item Con búsqueda en línea dos direcciones consecutivas son ortogonales, esto es 
+	\[ g_k \perp g_{k+1} \]
+	\item La trayectoria solución con búsqueda exacta sigue un patrón zig-zag.
+\end{itemize}
+
+\section{Método}
+\subsection{Método de Newton}
+Dada $ g: \mathbb{R}^n \to \mathbb{R}^n $ contiuamente diferenciable y $ x_0\in \mathbb{R}^n $: en cada iteración $ k $, (en nuestro caso $ g = \nabla f $ y $ Dg = \nabla^2 f = H $)
+\begin{enumerate}
+	\item Resolver $ D g (x_k) d_k = - g(x_k) $.
+	\item Actualizar $ x_{k+1} = x_k + d_k $
+\end{enumerate}
+La derivada de $ g = \nabla f(\cdot) $ en $ x $ es la matriz Jacobiana de $ g = \nabla f(\cdot) $ y la denotamos por $ J(x_k) = D g (x_k) $ o el Hessiano de $ f $, esto es, $ H(x_k) = Dg(x_k) = \nabla^2 f (x_k) $.
+\\
+Algunas de las \textbf{ventajas} de este método son
+\begin{shaded*}
+	\begin{enumerate}
+		\item Convergencia cuadrática para un buen punto inicial si $ H(x^*) = \nabla^2 f(x^*) $ es no singular.
+		\item  Solución exacta en una iteración para un $ \nabla f $ afín (exacto en cada iteración para cualquiera de las funciones componentes de $ \nabla f $).
+	\end{enumerate}
+\end{shaded*}
+Algunas desventajas son
+\begin{shaded*}
+	\begin{enumerate}
+		\item En general no es convergencia global.
+		\item  Requiere calcular el Hessiano $ H(x_k) = \nabla^2 f(x_k) $ en acada iteración.
+		\item En cada iteración se requiere solucionar un sistema lineal de ecuaciones que podría tener una matriz singular asociada o mal condicionada.
+		\item $ d_k = - H(x_k)^{-1} g(x_k) $ podrpia no ser una dirección de descenso.
+	\end{enumerate}
+\end{shaded*}
+
+\subsection{Método de Newton Modificado}
+\begin{shaded*}
+\begin{teo}
+	Suponga que $ f \in \mathcal{C}^3 $ y $ x^* \in \mathbb{R}^n $ es un punto tal que $ \nabla f(x^*) = 0 $ y $  H(x^*) $ es invertible. Entonces para todo $ x_0 $ suficientemente cercano a $ x^* $, el método de Newton está bien definido para todo $ k $ y converge a $ x^* $ con orden de convergencia al menos dos.
+\end{teo} 
+\end{shaded*}
+
+
+\begin{shaded*}
+	\begin{teo}
+	 Sea $ \{ x_k \} $ una sucesión generada por el método de Newton para minimizar la función $ f(x) $. Si el Hessiano $ H(x_k) $ es definido positivo y si $ g_k = \nabla f(x_k) \neq 0 $ entonces la dirección
+	 \[ d_k = - H(x_k)^{-1} g(x_k) = x_{k+1} - x_k \]
+	 es una direccióon de descenso.
+	\end{teo} 
+\end{shaded*}
+
+Notemos que aunque el método de Newton tiene propiedades de convergencia superiores si el punto inicial está cerca del punto solución, no se garantiza la convergencia si dicho punto inicial está lejos de él. Además, podría no ser un método de descenso, es decir, 
+\[ f(x_{k+1}) > f(x_k). \]
+
+Si la matriz Hessiana $ \nabla^2 f(x) $ no está definida possitiva, la dirección de Newton $ d_k^N $
+\[ \nabla^2 f(x_k) d_k^N = - \nabla f (x_k) \]
+podría no ser una dirección de descenso. 
+\\
+Una alternativa para solucionar este problema es modificar el Hessiano,
+\[ B_k = \nabla^2 f(x_k) + E_k \]
+tal que $ B_k $ sea definida positiva y la nueva dirección de búsqueda
+\[ B_k d_k = - \nabla f(x_k) \]
+sea una dirección de descenso.
+\\
+Se puede seleccionar simplemente, 
+\begin{shaded*}
+	\begin{equation}
+		E_k = \tau_k I
+	\end{equation}
+\end{shaded*}
+entonces
+\begin{shaded*}
+	\begin{equation}
+		B_k = \nabla^2 f(x_k) + \tau_k I
+	\end{equation}
+	con $ \tau_k \geq 0 $ asegura que $ B_k $ es lo suficientemente definida positiva.
+\end{shaded*}
+Se podría seleccionar $ \tau_k $ basado en el eigenvalor más pequeño de la matriz Hessiana $ \nabla^2 f(x_k) $ pero no siempre es posible y es computacionalmente costo.
+\\
+Existen distintas maneras de elegir dicho parámetro, se presenta en el pesudocódigo una elección que se basa en la factorización de Cholesky.
+
+
+\subsection{Pseudocódigo}
+\subsubsection{Método de Newton}
+\begin{shaded*}
+	\begin{algorithmic}[1]
+		% ENTRADA / SALIDA
+		\Require{punto inicial $ x_0 $}
+		\State{Haga $ alpha = \hat{\alpha} $}
+		\State{$inum =0 $}
+		\While{$ || \nabla f(x_k) || \neq 0 $}
+			\State{Resolver $ D g(x_k) d_k = - g_k $}
+			\State{Actualizar $ x_{k+1} = x_k + d_k $}
+		\EndWhile
+		\State{Regresa $ \alpha_k = \alpha $}
+	\end{algorithmic}
+\end{shaded*}
+
+\subsubsection{Cholesky con Múltiplo de la Identidad}
+\begin{shaded*}
+	\begin{algorithmic}[1]
+		% ENTRADA / SALIDA
+		\Require{Matriz $ A $ y tolerancia $ \beta = 1e-3 $}
+		\Ensure{Factorización $ A = L L^T $}
+		\If{$ min_i (a_{ii}) > 0 $}
+			\State{$\tau_0 = 0. $}
+		\Else
+			\State{$\tau_0 = - \min_i (a_{ii}) + \beta$}
+		\EndIf
+		\For{$ k = 0, 1, \dots $}
+			\State{Intenta factorizar $ L L^T = A + \tau_k I $}
+			\If{La descomposición fue exitosa}
+				\State{Regresa $ L $}
+			\Else
+				\State{$\tau_{k+1} = \max (2 \tau_k, \beta)$}
+			\EndIf
+		\EndFor
+	\end{algorithmic}
+\end{shaded*}
+
+\subsubsection{Método de Newton Modificado}
+\begin{shaded*}
+	\begin{algorithmic}[1]
+		% ENTRADA / SALIDA
+		\Require{Matriz $ A $ y tolerancia $ \beta = 1e-3 $}
+		\Ensure{Mínimo $ x_k $}
+		\State{k = 0}
+		\While{$ || \nabla f_k || > \tau $}
+			\State{Factorice $ B_k = \nabla^2 f(x_k) + \tau I $ usando Cholesky para obtener $ L $}
+			\State{Resuelva hacia atrás $ L L^T d_k = B_k d_k = - \nabla f (x_k) $}
+			\State{Haga $ x_{k+1} = x_k + \alpha_k d_k $}
+			\State{$ k = k + 1 $}
+		\EndWhile
+	\end{algorithmic}
+\end{shaded*}
+
+\subsection{Función de Rosembrock}
+\begin{shaded*}
+\[ f(x) = \sum_{i = 1}^{N-1} [100(x_{i+1} - x_i^2)^2 + (1 - x_i)^2] \]
+donde $ x = [ x_1, \dots, x_N ]^T \in\mathbb{R}^N $.
+\end{shaded*}
+\textbf{Gradiente}.  Primero notemos que  para $ 2 \leq j \leq N-1 $ se puede reescribir $ f(x) $ como
+\begin{eqnarray*}
+	f(x) & = & \sum_{i = 1}^{j-2}  [100(x_{i+1}- x_i^2)^2 + (1-x_i)^2] \\
+	     &   &  + [100(x_{j} - x_{j-1}^2)^2 + (1-x_{j-1})^2] \\
+	&   & [100(x_{j+1} - x_{j}^2)^2 + (1-x_{j})^2] \\
+	&   & +  \sum_{i = j+1}^{N-1} [100(x_{i-1} - x_i^2)^2 - (1-x_i)^2 ]. \\
+\end{eqnarray*}
+Notemos que el primer y útlimo término son constantes con respecto a $ x_j $, entonces se anularán al calcular la correspondiente derivada parcial.
+\\
+Para $ D_1 $ se tiene que
+\begin{eqnarray*}
+	\dfrac{\partial }{\partial x_1} f(x) & = & 100(2)(x_2 - x_1^2) (-2x_1) - 2(1-x_1)  \\
+	& = &  -400(x_2 - x_1^2)x_1 - 2(1-x_1).
+\end{eqnarray*}
+Para $ D_j \in\{ 2, \dots, N-1 \} $,
+\begin{eqnarray*}
+	\dfrac{\partial }{\partial x_j} f(x) & = & [200(x_j - x_{j-1}^2)] + [ 200(x_{j+1} - x_j^2)(-2x_j)] \\
+	& & - [2(1-x_j) ] \\
+	& = & 200(x_j - x_{j-1}^2) - 400 (x_{j+1} - x_j^2) x_j  \\
+	& & - 2(1-x_j)
+\end{eqnarray*}
+Para $ D_N $, 
+\begin{eqnarray*}
+	\dfrac{\partial }{\partial x_N} f(x) & = & 200(x_N - x_{N-1}^2).
+\end{eqnarray*}
+De lo anterior tenemos que
+\begin{shaded*}
+\footnotesize{
+\begin{equation*}
+	\nabla f(x)  =  \left[\begin{matrix}
+		-400(x_2 - x_1^2) x_1 - 2(1-x_1) \\
+		\vdots							 \\
+		200(x_j - x_{j-1}^2) - 400(x_{j+1} - x_j^2)x_j - 2(1-x_j)					 \\
+		\vdots  						 \\
+		200(x_N - x_{N-1}^2).
+	\end{matrix}\right]
+\end{equation*}}
+\end{shaded*}
+\textbf{Hessiano}. Para calcular el Hessiano, se debe considerar como casos particulares, aquellos que se apliquen a $ \dfrac{\partial f(x) (x)}{\partial x_1} $ y $ \dfrac{\partial f(x) (x)}{\partial x_N} $ (como se observó en el gradiente). 
+\\
+Para $ D_{x_k x_1 } $,
+\begin{eqnarray*}
+	\dfrac{\partial^2 f(x)}{\partial x_k \partial x_1} = \left\{\begin{matrix}
+		1200x_1^2 -400 x_2 +2 & si & k = 1 \\
+		-400x_1				  & si & k = 2 \\
+		0					  & e.o.c &
+	\end{matrix}\right.
+\end{eqnarray*}
+Para $ D_{x_k x_j} $ con $ j \in\{ 2,\dots, N-1 \} $,
+\begin{eqnarray*}
+	\dfrac{\partial^2 f(x)}{\partial x_k \partial x_j} = \left\{\begin{matrix}
+		1200x_j^2 -400 x_2 +2 & si & k = j   \\
+		-400x_j				  & si & k = j+1 \\
+		-400 x_{j-1}          & si & k = j-1 \\
+		0					  & e.o.c &
+	\end{matrix}\right.
+\end{eqnarray*}
+Para $ D_{x_k x_N} $,
+\begin{eqnarray*}
+	\dfrac{\partial^2 f(x)}{\partial x_k \partial x_1} = \left\{\begin{matrix}
+		-400 x_{N-1} & si & k = N - 1 \\
+		200		     & si & k = N \\
+		0					  & e.o.c &
+	\end{matrix}\right.
+\end{eqnarray*}
+Así que el Hessiano tiene la forma
+\begin{shaded}
+\tiny{\begin{eqnarray*}
+	H(x) = \left( \begin{matrix}
+		1200x_1^2 -400 x_2 +2  &          -400 x_1         & \dots  & 0 \\
+		         -400 x_1      & 1200x_2^2 - 400 x_3 + 202 & \dots  & 0 \\
+		         \vdots        &            \vdots         & \vdots & \vdots \\
+		            0          &               \dots       & -400x_{N-1} & 200
+	\end{matrix} \right).
+\end{eqnarray*}}
+\end{shaded}
+
+\subsection{Función de Wood}
+Para $ n = 4 $ esta función está dada por
+\begin{shaded*}
+	\begin{eqnarray*}
+		f(x) & = & 100 (x_1^2 - x_2)^2 + (x_1 - 1)^2 \\
+			 &   & + (x_3 - 1)^2 + 90 (x_3^2 - x_4)^2 \\
+		  	 &   & + 10.1 [ (x_2 -1)^2 + (x_4 -1)^2 ] \\
+		  	 &   & + 19.8 (x_2 -1) (x_4 -1).
+	\end{eqnarray*}
+\end{shaded*}
+\textbf{Gradiente}. Derivando respecto a cada entrada obtenemos
+\begin{shaded*}
+\begin{eqnarray*}
+	\dfrac{\partial f(x)}{\partial x_1} & = & 400(x_1^2 - x_2) x_1 + 2(x_1 - 1) \\
+	\dfrac{\partial f(x)}{\partial x_2} & = &-200(x_1^2 - x_2) + 20.2 (x_2 - 1) \\
+										&   & + 19.8 (x_4 - 1) \\
+	\dfrac{\partial f(x)}{\partial x_3} & = & 2(x_3 - 1) + 360 (x_3^2 - x_4) x_3 \\
+	\dfrac{\partial f(x)}{\partial x_4} & = & -180 (x_3^2 - x_4)+ 20.2 (x_4 - 1)  \\
+										&   & +19.8(x_2 -1).
+\end{eqnarray*}
+\end{shaded*}
+\textbf{Hessiano}
+\begin{shaded*}
+\tiny{\begin{equation*}
+	H_f (x) = \left[\begin{matrix}
+					1200 x_1^2 - 400 x_1 + 2 & -400 x_1 & 0 & 0 \\
+					-400 x_1                 & 220.2    & 0 & 19.8 \\
+					0                        & 0        & 1080x_3^2 - 360x_4 + 2 & -360x_3 \\
+					0 & 19.8 & -360 x_3 & 2020.2. 
+					 
+	\end{matrix}\right]
+\end{equation*}}
+\end{shaded*}
+\section{Resultados}
+Para comparar los resultados de los métodos de Newton se utilizó el método de descenso gradiente con backtracking. 
+\subsection{Función de Rosembrock}
+Se eligieron los parámetros
+\begin{center}
+	\begin{tabular}{cc}
+		\hline
+		Parámetro & Valor \\
+		\hline
+		$\alpha $ & 0.1 \\
+		$ \rho $  & 0.1 \\
+		$ c_1 $ & $ 10^{-4} $ \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Función de Wood}
+De los resultados de tareas previas se eligieron los parámetros
+\begin{center}
+	\begin{tabular}{cc}
+		\hline
+		Parámetro & Valor \\
+		\hline
+		$\alpha $ & 0.9 \\
+		$ \rho $  & 0.5 \\
+		$ c_1 $ & $ 10^{-4} $ \\
+		\hline
+	\end{tabular}
+\end{center}
+El experimento se repitió $ 30 $ veces usando puntos iniciales aleatorios de la forma
+\[ x_0 = [x_0^1 + \eta_1, x_0^2 + \eta_2, \dots, x_0^n + \eta_n] \]
+donde $ \eta_k \sim \mathcal{U}(-1,1) $. 
+
+
+\twocolumn[
+\begin{@twocolumnfalse}
+	Los resultados para el promedio de tiempo fueron
+	\begin{center}
+		\begin{tabular}{cccc}
+			\hline
+			Algoritmo & Máximo Descenso  & Newton & Newton Modificado \\
+			\hline
+			Rosembrock & 123.3166 segundos  & 12.3198 segundos & 28.5644 segundos                   \\
+			Wood       & 6.7318 segundos &  0.0160 segundos & 0.0220 segundos  \\
+			\hline
+		\end{tabular}
+	\end{center}
+	Los resultados para el promedio de iteraciones fueron
+	\begin{center}
+		\begin{tabular}{cccc}
+			\hline
+			Algoritmo & Máximo Descenso & Newton & Newton Modificado \\
+			\hline
+			Rosembrock & 10003          & 3599.7 & 7468.8            \\
+			Wood       & 9479.46        & 102.03 & 98.13              \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{@twocolumnfalse}]
+\section{Conclusiones}
+	\subsection{Máximo Descenso}
+	Como se observó en tareas anteriores, aunque el algoritmo converge, la solución no siempre es el vector de $ 1's $. Para la función de Wood se observó un comportamiento similar.
+	\subsection{Newton}
+	En este método se mejoró considerablemente el desempeño del algoritmo tanto para tiempo como para número de iteraciones en ambas funciones a pesar que el cada iteración se debe resolver un sistema de ecuaciones.
+	\\
+	Este método no garantiza la convergencia global, esto se observó en la función de Rosembrock, ya qu no siempre se llegaba al óptimo dado. 
+	\subsection{Newton Modificado}
+	Este método intenta solucionar algunos de los problemas del método de Newton forzando a la matriz Hessiana a ser lo suficientemente definda positiva agregándole un múltiplo de la identidad. Se observó que la variación entre Newton y Newton Modificado es pequeña, aunque más grande. Esto es de esperarse debido a la robustés del método.
+\end{document}

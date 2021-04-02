@@ -1,0 +1,13 @@
+\BOOKMARK [1][-]{section.1}{Introducci\363n}{}% 1
+\BOOKMARK [1][-]{section.2}{Redes Neuronales Artificiales}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Inspiraci\363n Biol\363gica}{section.2}% 3
+\BOOKMARK [1][-]{section.3}{Perceptr\363n como Modelo Matem\341tico}{}% 4
+\BOOKMARK [2][-]{subsection.3.1}{Aprendizaje de una Neurona}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.2}{Ejemplos con una neurona}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Redes Neuronales Artificiales}{}% 7
+\BOOKMARK [1][-]{section.5}{Backpropagation}{}% 8
+\BOOKMARK [2][-]{subsection.5.1}{Descenso Gradiente}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.2}{ La Funci\363n de Activaci\363n Sigmoide}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.3}{De la Capa de Salida a la Capa Oculta }{section.5}% 11
+\BOOKMARK [2][-]{subsection.5.4}{De la Capa Oculta a la Capa de Entrada}{section.5}% 12
+\BOOKMARK [2][-]{subsection.5.5}{El Algoritmo}{section.5}% 13

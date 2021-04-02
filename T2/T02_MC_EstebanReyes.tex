@@ -1,0 +1,354 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,USenglish]{babel}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{setspace}
+\usepackage{enumerate} 
+%gráficos y figuras
+\usepackage{pgf,tikz,pgfplots}
+\usetikzlibrary{arrows}
+\pgfplotsset{compat=1.15}
+\usetikzlibrary{trees,arrows,positioning,calc}
+\tikzstyle{redVertex}  =[draw,fill=red,circle,minimum size=30pt,inner sep=-0pt, text=white]
+\tikzstyle{blackVertex}=[draw,fill=black,circle,minimum size=30pt,inner sep=0pt, text=white]
+\tikzstyle{nil}=[draw,fill=black,rectangle,minimum size=30pt,inner sep=0pt, text=white]
+%escribir programas
+\usepackage{listings}
+%encabezado
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+% Números de página en las esquinas de los encabezados
+\fancyhead[R]{\thepage} 
+%Espacio para Titulo (revisar warnings)
+\setlength{\headheight}{14.5pt}
+% Formato para la sección: N.M. Nombre
+\renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}{}} 
+%título
+\title{ \textbf{Tarea Dos} \\ Optimización I}
+\author{Esteban Reyes Saldaña}
+\date{\today}
+%definiciones
+\theoremstyle{definition}
+\newtheorem{problm}{Problema}
+\usepackage{colortbl}
+\usepackage{tabularx}
+\usepackage{dcolumn}
+\usepackage{multirow}
+\usetikzlibrary[patterns]
+
+\begin{document}
+	
+\selectlanguage{spanish}
+\maketitle 
+\begin{problm}
+	La derivada direccional $ \dfrac{\partial f}{\partial v} (x_0, y_0, z_0) $ de una función diferenciable $ f $ son $ \dfrac{3}{\sqrt{2}}, \dfrac{1}{\sqrt{2}} $ y $ -\dfrac{1}{\sqrt{2}} $ en las direcciones de los vectores $ \left[ 0, \dfrac{1}{\sqrt{2}}, \dfrac{1}{\sqrt{2}} \right]^T $, $ \left[ \dfrac{1}{\sqrt{2}}, 0, \dfrac{1}{\sqrt{2}} \right]^T $ y $ \left[ \dfrac{1}{\sqrt{2}}, \dfrac{1}{\sqrt{2}}, 0 \right]^T $. Calcule $ \nabla f(x_0, y_0, z_0) $,
+	\\
+	\textbf{Solución}. En clase se vio que dada  una función diferenciable $ f: \mathbb{R}^n \to \mathbb{R} $ entonces
+	\[ D_a f(x, y, z) = \nabla f(x,y,z)^T a. \]
+	Sean 
+	\begin{eqnarray*}
+		u & = & \left[ 0, \dfrac{1}{\sqrt{2}}, \dfrac{1}{\sqrt{2}} \right]^T  \\
+		v & = & \left[ \dfrac{1}{\sqrt{2}}, 0, \dfrac{1}{\sqrt{2}} \right]^T \\
+		w & = & \left[ \dfrac{1}{\sqrt{2}}, \dfrac{1}{\sqrt{2}}, 0 \right]^T.
+	\end{eqnarray*}
+	y 
+	\[ \nabla f(x_0,y_0,z_0) = \left[ \dfrac{\partial f}{\partial x}(x_0,y_0, z_0), \dfrac{\partial f}{\partial y}(x_0,y_0, z_0), \dfrac{\partial f}{\partial z}(x_0,y_0, z_0) \right]^T \]
+	Luego,
+	\begin{eqnarray*}
+		\dfrac{3}{\sqrt{2}} = \dfrac{\partial f}{\partial u} (x_0, y_0, z_0) & = & \nabla f(x_0, y_0, z_0)^T u \\
+		\dfrac{1}{\sqrt{2}} = \dfrac{\partial f}{\partial v} (x_0, y_0, z_0) & = & \nabla f(x_0, y_0, z_0)^T v \\
+		-\dfrac{1}{\sqrt{2}} = \dfrac{\partial f}{\partial w} (x_0, y_0, z_0) & = & \nabla f(x_0, y_0, z_0)^T w.
+	\end{eqnarray*}
+	Realizando el producto punto entre el gradiente y los vectores $ u,v,w $ se obtiene el sistema
+	\begin{eqnarray*}
+		\dfrac{1}{\sqrt{2}} \cdot \dfrac{\partial f}{\partial y}(x_0,y_0, z_0) + \dfrac{1}{\sqrt{2}} \cdot \dfrac{\partial f}{\partial z}(x_0,y_0, z_0) & = & \dfrac{3}{\sqrt{2}} \\
+		\dfrac{1}{\sqrt{2}} \cdot \dfrac{\partial f}{\partial x}(x_0,y_0, z_0) + \dfrac{1}{\sqrt{2}} \cdot \dfrac{\partial f}{\partial z}(x_0,y_0, z_0) & = & \dfrac{1}{\sqrt{2}} \\
+		\dfrac{1}{\sqrt{2}} \cdot \dfrac{\partial f}{\partial x}(x_0,y_0, z_0) + \dfrac{1}{\sqrt{2}} \cdot \dfrac{\partial f}{\partial y}(x_0,y_0, z_0) & = & -\dfrac{1}{\sqrt{2}}
+	\end{eqnarray*}
+	que es lineal respecto a las derivadas parciales en las direcciones canónicas. Así que se procede a resolver el sistema matricial asociado
+	\begin{eqnarray*}
+		\left( \begin{matrix}
+			           0         & \dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{2}} & | & \dfrac{3}{\sqrt{2}} \\
+			 \dfrac{1}{\sqrt{2}} &         0           & \dfrac{1}{\sqrt{2}} & | & \dfrac{1}{\sqrt{2}} \\
+			 \dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{2}} &        0            & | & -\dfrac{1}{\sqrt{2}} \\
+		\end{matrix} \right) & \sim &
+		\left( \begin{matrix}
+			0 & 1 & 1 & | & 3 \\
+			1 & 0 & 1 & | & 1 \\
+			1 & 1 &  0 &| & -1 
+		\end{matrix} \right) \\
+							& \sim &
+							\left( \begin{matrix}
+								0 & 1 &  1 & | & 3 \\
+								1 & 0 &  1 & | & 1 \\
+								1 & 0 & -1 & | & -4 
+							\end{matrix} \right) \\
+						    & \sim &
+						    \left( \begin{matrix}
+						    	0 & 1 & 1 & | & 3 \\
+						    	1 & 0 & 1 & | & 1 \\
+						    	2 & 0 & 0 & | & -3 
+						    \end{matrix} \right) \\
+					        & \sim &
+					        \left( \begin{matrix}
+					        	0 & 1 & 1 & | & 3 \\
+					        	1 & 0 & 1 & | & 1 \\
+					        	1 & 0 & 0 & | & -3/2 
+					        \end{matrix} \right) \\
+				            & \sim &
+			                \left( \begin{matrix}
+			                	0 & 1 & 0 & | & 1/2 \\
+			                	0 & 0 & 1 & | & 5/2 \\
+			                	1 & 0 & 0 & | & -3/2 
+			                \end{matrix} \right).
+	\end{eqnarray*}
+	De lo anterior, se concluye que
+	\[ \nabla f (x_0, y_0, z_0) = \left[ -\dfrac{3}{2}, \dfrac{1}{2}, \dfrac{5}{2} \right]^T. \]
+\end{problm}
+
+\begin{problm}
+	Demuestre que las curvas de nivel de la función $ f(x,y) = x^2 + y^2 $ son ortogonales a las curvas de nivel de $ g(x,y) = \dfrac{y}{x} $ para todo $ (x,y) $.
+	\begin{proof}
+		Observemos que dada una función diferenciable  $ f: \mathbb{R}^n \to \mathbb{R} $, se tiene que $ \nabla f $ es siempre ortogonal a la gráfica de dicha función. Así, dada $ f(x,y) $ diferenciable, $ \nabla f(x,y) $ es ortogonal a la gráfica de la función, es decir, es ortogonal a toda curva de nivel. Luego, para probar la ortogonalidad entre curvas de nivel entre $ f(x,y) $ y $ g(x,y) $ se probará la ortogonalidad entre los gradientes.
+		\begin{eqnarray*}
+			\nabla f(x,y) & = & \left[ 2x, 2y \right]^T \\
+			\nabla g(x,y) & = & \left[ -\dfrac{y}{x^2}, \dfrac{1}{x} \right]^T
+		\end{eqnarray*}
+		Entonces,
+		\begin{eqnarray*}
+			<\nabla f(x,y), \nabla g(x,y) > & = & -\dfrac{2xy}{x^2} + \dfrac{2y}{x} \\
+											& = & -\dfrac{2y}{x} + \dfrac{2y}{x} \\
+											& = & 0.
+		\end{eqnarray*}
+	\end{proof}
+\end{problm}
+
+\begin{problm}
+	Calcule los puntos estacionarios de $ f(x,y) = \dfrac{3x^4 - 4x^3 - 12x^2 + 18}{12(1+4y^2)} $ y determine su tipo correspondiente (máximo, mínimo o punto silla).
+	\\
+	\textbf{Solución.} Buscamos los puntos tales que 
+	\[ \nabla f(x,y) = (0,0). \]
+	Tenemos que
+	\begin{eqnarray*}
+		\dfrac{\partial}{\partial x} f(x,y) & = & \dfrac{12(x^3 - x^2 -2x)}{12(1+4y^2)} \\
+											& = & \dfrac{x(x^2 - x -2)}{1+4y^2}
+	\end{eqnarray*}
+	\begin{eqnarray*}
+		\dfrac{\partial}{\partial y} f(x,y) & = & \dfrac{3x^4 - 4 x^3 - 12x^2 +18}{12} \cdot \dfrac{-8y}{(1+4y^2)^2}\\
+		& = & - \dfrac{2(3x^4 - 4 x^3 - 12x^2 +18) y}{3(1+4y^2)^2}
+	\end{eqnarray*}
+	De donde $ \nabla f(x,y) = 0 $ sí y solo si
+	\begin{eqnarray}
+		x(x^2-x-2) = x(x-2)(x+1) & = & 0 \\
+		(3x^4 - 4 x^3 - 12x^2 +18) y & = & 0.
+	\end{eqnarray}
+	De la ecuación (1) tenemos que
+	\[ x = -1 \textup{ o } x = 0 \textup{ o } x = 2. \]
+	Sustituyendo estos valores en la ecuación (2) tenemos que
+	\\
+	para $  x = -1 $,
+	\begin{eqnarray*}
+		(3(-1)^4 - 4 (-1)^3 - 12 (-1)^2 + 18) y & = & 0 \\
+		(3+4-12+18) y & = & 0 \\
+		13 y & = & 0 \\
+		 y & = & 0.
+	\end{eqnarray*}
+	Para $ x = 0 $,
+	\begin{eqnarray*}
+		(3(0) - 4(0) - 12(0) + 18) y & = & 0 \\
+		18 y & = & 0 \\
+		y & = & 0.
+	\end{eqnarray*}
+	Para $ x = 2 $, 
+	\begin{eqnarray*}
+		(3(2)^4 - 4 (2)^3 - 12 (2)^2 + 18) y & = & 0 \\
+		-14 y & = & 0 \\
+		y & = & 0.
+	\end{eqnarray*}
+	Así que los \textbf{puntos estacionarios} son
+	\[ (-1,0), (0, 0) \textup{ y } (2,0). \]
+	Para identificar el tipo de punto estacionario se observarán los valores propios de la matriz Hessiana asociada a dichos puntos. Obteniendo el Hessiano,
+	\begin{eqnarray*}
+		\dfrac{\partial^2 f(x,y) }{\partial x^2} & = & 3\dfrac{3x^2 - 2x -2}{1+4y^2} \\
+		\dfrac{\partial^2 f(x,y) }{\partial y \partial x} & = & \dfrac{x(x^2 -x-2)}{(1+4y^2)^2} (-8y) \\
+												 & = & -\dfrac{8xy(x^2 -x-2)}{(1+4y^2)^2} \\
+		\dfrac{\partial^2 f(x,y) }{\partial x \partial y} & = & -\dfrac{2}{3} \cdot \dfrac{(12x^3 - 12x^2 -24x)y}{(1+4y^2)^2} \\
+		\dfrac{\partial^2 f(x,y) }{\partial y^2} & = & -\dfrac{2}{3}(3x^4 - 4x^3 - 12x^2 + 18) \left( - \dfrac{2}{(1+4y^2)^3} (8y) + \dfrac{1}{(1+4y^2)^2}  \right) \\
+		& = & -\dfrac{2}{3}(3x^4 - 4x^3 - 12x^2 + 18) \left( \dfrac{-16y +1 +4y^2}{(1+4y^2)^3} \right). \\									 
+	\end{eqnarray*}
+	Entonces
+	\begin{eqnarray*}
+		H_f(x,y) & = & \left(\begin{matrix}
+							\dfrac{3x^2 - 2x -2}{1+4y^2} & -\dfrac{8xy(x^2 -x-2)}{(1+4y^2)^2} \\
+							-\dfrac{2y(12x^3 - 12x^2 -24x)}{3(1+4y^2)^2} & 
+							-\dfrac{2 (3x^4 - 4x^3 - 12x^2 + 18)(4y^2 - 16y + 1) }{3(1+4y^2)^3}.
+		\end{matrix}\right)
+	\end{eqnarray*}
+	Luego,
+	\begin{eqnarray*}
+		H_f(-1,0) & = & \left(\begin{matrix}
+			\dfrac{3+2-2}{1} & 0 \\
+			0 & 
+			-\dfrac{2 (3 + 4 - 12 + 18)(1) }{1}.
+		\end{matrix}\right) \\
+				  & = & \left(\begin{matrix}
+				  	3 & 0 \\
+				  	0 & 
+				  	-\dfrac{26}{3}.
+				  \end{matrix}\right)
+	\end{eqnarray*}
+
+	\begin{eqnarray*}
+		H_f(0,0) & = & \left(\begin{matrix}
+			-2 & 0 \\
+			0 & 
+			-\dfrac{2 (18)}{3}.
+		\end{matrix}\right) \\
+		& = & \left(\begin{matrix}
+			-2 & 0 \\
+			0 & 
+			-12.
+		\end{matrix}\right)
+	\end{eqnarray*}
+
+	\begin{eqnarray*}
+		H_f(2,0) & = & \left(\begin{matrix}
+			3(4) - 2(2) -2 & 0  \\
+			0 & 
+			-\dfrac{2 (3(16) - 4(8) - 12(4) +18)}{3}.
+		\end{matrix}\right) \\
+		& = & \left(\begin{matrix}
+			 6 & 0 \\
+			 0 & -\dfrac{56}{3}.
+		\end{matrix}\right)
+	\end{eqnarray*}
+	Dado que las matrices Hessianas asociadas son diagonales, entonces sus eigenvalores son los valores en la diagonal. Dichos valores son reales, entonces, por un teorema visto en clase, concluímos que
+	\\
+	$ (-1,0) $ es un \textbf{punto silla} (dado que tiene eigenvalores tanto positivos como negativos).
+	\\
+	$ (0,0) $ es un \textbf{mínimo} (dado que todos sus eigenvalores son negativos).
+	\\
+	$ (2,0) $ es un \textbf{punto silla} (dado que tiene eigenvalores tanto positivos como negativos).
+\end{problm}
+
+\begin{problm}
+	Calcule el gradiente $ \nabla f(x) $ y el Hessiano $ \nabla^2 f(x) $ de la función de Rosenbrock
+	\[ f(x) = \sum_{i = 1}^{N-1} [100(x_{i+1} - x_i^2)^2 + (1 - x_i)^2] \]
+	donde $ x = [ x_1, \dots, x_N ]^T \in\mathbb{R}^N $.
+	\\
+	\textbf{Solución}.  Primero notemos que  para $ 2 \leq j \leq N-1 $ se puede reescribir $ f(x) $ como
+	\begin{eqnarray*}
+		f(x) & = & \sum_{i = 1}^{j-2}  [100(x_{i+1}- x_i^2)^2 + (1-x_i)^2] + [100(x_{j} - x_{j-1}^2)^2 + (1-x_{j-1})^2] \\
+			 &   & [100(x_{j+1} - x_{j}^2)^2 + (1-x_{j})^2] +  \sum_{i = j+1}^{N-1} [100(x_{i-1} - x_i^2)^2 - (1-x_i)^2 ]. \\
+	\end{eqnarray*}
+	Notemos que el primer y útlimo término son cosntantes con respecto a $ x_j $, entonces se anularán al calcular la correspondiente derivada parcial.
+	\\
+	Para $ D_1 $ se tiene que
+	\begin{eqnarray*}
+		\dfrac{\partial }{\partial x_1} f(x) & = & 100(2)(x_2 - x_1^2) (-2x_1) - 2(1-x_1)  \\
+										     & = &  -400(x_2 - x_1^2)x_1 - 2(1-x_1).
+	\end{eqnarray*}
+	Para $ D_j \in\{ 2, \dots, N-1 \} $,
+	\begin{eqnarray*}
+		\dfrac{\partial }{\partial x_j} f(x) & = & [200(x_j - x_{j-1}^2)] + [ 200(x_{j+1} - x_j^2)(-2x_j)] - [2(1-x_j) ] \\
+		   									 & = & 200(x_j - x_{j-1}^2) - 400 (x_{j+1} - x_j^2) x_j - 2(1-x_j)
+	\end{eqnarray*}
+	Para $ D_N $, 
+	\begin{eqnarray*}
+		\dfrac{\partial }{\partial x_N} f(x) & = & 200(x_N - x_{N-1}^2).
+	\end{eqnarray*}
+	De lo anterior tenemos que
+	\begin{equation}
+		\nabla f(x)  =  \left[\begin{matrix}
+								-400(x_2 - x_1^2) x_1 - 2(1-x_1) \\
+								\vdots							 \\
+								200(x_j - x_{j-1}^2) - 400(x_{j+1} - x_j^2)x_j - 2(1-x_j)					 \\
+								\vdots  						 \\
+								200(x_N - x_{N-1}^2).
+		\end{matrix}\right]
+	\end{equation}
+	\textbf{Nota}. Para calcular el Hessiano,se debe considerar como casos particulares, aquellos que se apliquen a $ \dfrac{\partial f(x) (x)}{\partial x_1} $ y $ \dfrac{\partial f(x) (x)}{\partial x_N} $ (como se observó en el gradiente). 
+	\\
+	Para $ D_{x_k x_1 } $,
+	\begin{eqnarray*}
+		\dfrac{\partial^2 f(x)}{\partial x_k \partial x_1} = \left\{\begin{matrix}
+																	1200x_1^2 -400 x_2 +2 & si & k = 1 \\
+																	-400x_1				  & si & k = 2 \\
+																	0					  & e.o.c &
+															 \end{matrix}\right.
+	\end{eqnarray*}
+	Para $ D_{x_k x_j} $ con $ j \in\{ 2,\dots, N-1 \} $,
+	\begin{eqnarray*}
+		\dfrac{\partial^2 f(x)}{\partial x_k \partial x_j} = \left\{\begin{matrix}
+			1200x_j^2 -400 x_2 +2 & si & k = j   \\
+			-400x_j				  & si & k = j+1 \\
+			-400 x_{j-1}          & si & k = j-1 \\
+			0					  & e.o.c &
+		\end{matrix}\right.
+	\end{eqnarray*}
+	Para $ D_{x_k x_N} $,
+	\begin{eqnarray*}
+		\dfrac{\partial^2 f(x)}{\partial x_k \partial x_1} = \left\{\begin{matrix}
+			-400 x_{N-1} & si & k = N - 1 \\
+			200		     & si & k = N \\
+			0					  & e.o.c &
+		\end{matrix}\right.
+	\end{eqnarray*}
+	Así que el Hessiano tiene la forma
+	\begin{eqnarray}
+		H(x) = \left( \begin{matrix}
+							1200x_1^2 -400 x_2 +2  & -400 x_1 & 0 & 0 & \dots & 0 & 0 \\
+							-400 x_1 & 1200x_2^2 - 400 x_3 + 202 & -400 x_2 & 0 \dots & 0 & 0 \\
+							\vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+							0 & 0 & 0 & 0 & \dots & -400x_{N-1} & 200
+		\end{matrix} \right).
+	\end{eqnarray}
+\end{problm}
+
+\begin{problm}
+	Demuestre, sin usar condiciones de optimalidad, que $ f(x) > f(x^*) $ para todo $ x \neq x^* $ si
+	\[ f(x) = \dfrac{1}{2} x^T Q x - b^T x \]
+	$ Q = Q^T > 0 $ y $ Q x^* = b $.
+	\begin{proof}
+		Primero observemos que dados $ x,y\in\mathbb{R}^n $ tenemos que, como $ Q = Q^T $,
+		\[ x^T Q y = (Qy)^T x = y^T Q^T x = y^T Q x. \]
+		Por lo que
+		\begin{equation}\label{propiedad}
+			x^T Q y = y^T Q x.
+		\end{equation}
+		
+		Ahora,
+		\begin{eqnarray*}
+			f(x) & = & f(x^* + (x - x^*)) \\
+				& = & \dfrac{1}{2} (x^* + (x - x^*))^T Q (x^* + (x - x^*)) - b^T (x^* + (x - x^*)) \\
+				& = & \dfrac{1}{2} \left(  (x^*)^T Q + (x - x^*)^T Q \right) (x^* + (x - x^*)) - b^T (x^* + (x - x^*)) \\
+				& = & \dfrac{1}{2} (x^*)^T Q x^* + \dfrac{1}{2} (x^*)^T Q (x - x^*) + \dfrac{1}{2} (x - x^*)^T Q x^* \\
+				&   & + \dfrac{1}{2} (x - x^*)^T Q (x - x^*) -b^T(x^* + (x - x^*)) \\
+				& = & \dfrac{1}{2} (x^*)^T Q x^* +\underbrace{ \dfrac{1}{2} (x - x^*)^T Q x^*}_{(\ref{propiedad})} + \dfrac{1}{2} (x - x^*)^T Q x^* \\
+				&   & + \dfrac{1}{2} (x - x^*)^T Q (x - x^*) -b^T(x^* + (x - x^*))
+			\end{eqnarray*}
+	
+	
+	
+	
+	
+	
+		Ahora,
+		\begin{eqnarray*}
+			     & = & \dfrac{1}{2} (x^*)^T Q x^* + (x - x^*)^T Q x^* + \underbrace{\dfrac{1}{2} (x - x^*)^T Q (x - x^*)}_{\textbf{Definida Positiva}} \\
+			     &   & - b^T(x^* + (x - x^*)) \\
+			     & > & \dfrac{1}{2} (x^*)^T Q x^* + (x - x^*)^T Q x^* - b^T(x^* + (x - x^*))  \\
+			     & = & \dfrac{1}{2} (x^*)^T Q x^* - b^T x^* + (x - x^*)^T Q x^* - b^T(x - x^*)  \\
+			     & = & f(x^*) + (x - x^*)^T Q x^* - (x - x^*)^T b  \\
+			     & = & f(x^*) + (x - x^*)^T (Q x^* - b)  \\
+			     & = & f(x^*) + (x - x^*)^T (\underbrace{b}_{\textup{hipótesis}} - b)  \\
+			     & = & f(x^*)
+		\end{eqnarray*}
+		Así que $ f(x) > f(x^*) $.
+	\end{proof}
+\end{problm}
+
+\end{document}

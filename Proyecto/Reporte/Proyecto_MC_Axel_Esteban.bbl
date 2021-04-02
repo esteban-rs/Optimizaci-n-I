@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+
+\bibitem{4}
+{\sc Minsky, M., and Papert, S.}
+\newblock {\em Perceptrons: An Introduction to Computational Geometry}.
+\newblock MIT Press, Cambridge, MA, USA, 1969.
+
+\bibitem{5}
+{\sc Rumelhart, D.~E., McClelland, J.~L., and {{PDP Research Group}}}, Eds.
+\newblock {\em Parallel Distributed Processing. {Volume 1}: Foundations}.
+\newblock MIT Press, Cambridge, MA, 1986.
+
+\bibitem{10}
+{\sc Van Der~Malsburg, C.}
+\newblock Frank rosenblatt: Principles of neurodynamics: Perceptrons and the
+  theory of brain mechanisms.
+\newblock In {\em Brain Theory\/} (Berlin, Heidelberg, 1986), G.~Palm and
+  A.~Aertsen, Eds., Springer Berlin Heidelberg, pp.~245--248.
+
+\end{thebibliography}
