@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Debian) (preloaded format=pdflatex 2020.12.25)  30 APR 2021 19:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Debian) (preloaded format=pdflatex 2020.12.25)  4 MAY 2021 00:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**T08_MC_EstebanReyesSaldana.tex
-(./T08_MC_EstebanReyesSaldana.tex
+**T10_MC_EstebanReyesSaldana.tex
+(./T10_MC_EstebanReyesSaldana.tex
 LaTeX2e <2020-02-02> patch level 5
 L3 programming layer <2020-07-17>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -730,11 +730,11 @@ File: l3backend-pdfmode.def 2020-06-29 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count315
 \l__pdf_internal_box=\box70
 )
-(./T08_MC_EstebanReyesSaldana.aux
+(./T10_MC_EstebanReyesSaldana.aux
 LaTeX Info: Redefining \. on input line 9.
 LaTeX Info: Redefining \% on input line 9.
 )
-\openout1 = `T08_MC_EstebanReyesSaldana.aux'.
+\openout1 = `T10_MC_EstebanReyesSaldana.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
 LaTeX Font Info:    ... okay on input line 56.
@@ -825,38 +825,23 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 67.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 1275) in paragraph at lines 67--67
-\OT1/cmr/m/n/10 Se pre-sen-ta a con-ti-nua-ci^^Son una des-crip-ci^^Son ge-ne-r
-al, as^^S^^P co-mo el pseu-doc^^Sodi-go de los m^^Seto-
- []
-
-
 Overfull \hbox (4.69865pt too wide) in paragraph at lines 67--67
 [] 
- []
-
-
-Overfull \hbox (9.24065pt too wide) in paragraph at lines 80--81
-\OT1/cmr/m/n/10.95 (1.1[]), $\OML/cmm/m/it/10.95 f\OT1/cmr/m/n/10.95 (\OML/cmm/
-m/it/10.95 x\OT1/cmr/m/n/10.95 )$ de-cre-ce m^^Sas r^^Sapi-do en la di-rec-ci^^
-Son $\OMS/cmsy/m/n/10.95 ^^@r\OML/cmm/m/it/10.95 f\OT1/cmr/m/n/10.95 (\OML/cmm/
-m/it/10.95 x\OT1/cmr/m/n/10.95 )$. 
  []
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
-Overfull \hbox (29.93091pt too wide) detected at line 128
-\OML/cmm/m/it/10.95 g\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 []; ^^V[]\OT1/cmr
-/m/n/10.95 ) = [] [][] \OML/cmm/m/it/10.95 ;
+Overfull \hbox (2.329pt too wide) in paragraph at lines 166--167
+\OT1/cmr/m/n/10.95 Si $\OML/cmm/m/it/10.95 []$ \OT1/cmr/m/n/10.95 es un ta-ma~
+no de pa-so exac-to en-ton-ces $\OML/cmm/m/it/10.95 g[]d[] \OT1/cmr/m/n/10.95 =
+
  []
 
 
-Overfull \hbox (16.71658pt too wide) detected at line 176
-[]\OML/cmm/m/it/9 g\OT1/cmr/m/n/9 (\OML/cmm/m/it/9 []; ^^V[]\OT1/cmr/m/n/9 ) =
- \OMS/cmsy/m/n/9 ^^@\OT1/cmr/m/n/9 2 [](\OMS/cmsy/m/n/9 ^^@\OML/cmm/m/it/9 w[]\
-OT1/cmr/m/n/9 ) [] []
+Overfull \hbox (13.15535pt too wide) detected at line 178
+[] [] []
  []
 
 
@@ -866,84 +851,257 @@ We now make it that large for the rest of the document.
 This may cause the page layout to be inconsistent, however.
 
 [2]
-Overfull \hbox (0.82376pt too wide) in paragraph at lines 218--219
-\OT1/cmr/m/n/10.95 Para el m^^Seto-do de \OT1/cmr/bx/n/10.95 des-cen-so gra-die
-n-te \OT1/cmr/m/n/10.95 con b^^Susque-
+Underfull \hbox (badness 3343) in paragraph at lines 235--236
+[] \OT1/cmr/m/n/10.95 Cal-cu-lar $\OML/cmm/m/it/10.95 []$ \OT1/cmr/m/n/10.95 u
+san-do un m^^Seto-do de
  []
 
-<graficas/rose_seg.png, id=33, 487.8225pt x 250.9375pt>
-File: graficas/rose_seg.png Graphic file (type png)
-<use graficas/rose_seg.png>
-Package pdftex.def Info: graficas/rose_seg.png  used on input line 252.
-(pdftex.def)             Requested size: 171.66864pt x 88.30806pt.
-<graficas/rose_hist.png, id=35, 487.8225pt x 250.9375pt>
-File: graficas/rose_hist.png Graphic file (type png)
-<use graficas/rose_hist.png>
-Package pdftex.def Info: graficas/rose_hist.png  used on input line 254.
-(pdftex.def)             Requested size: 171.66864pt x 88.30806pt.
-<graficas/person_seg.png, id=36, 498.86375pt x 199.74625pt>
-File: graficas/person_seg.png Graphic file (type png)
-<use graficas/person_seg.png>
-Package pdftex.def Info: graficas/person_seg.png  used on input line 256.
-(pdftex.def)             Requested size: 171.66864pt x 68.73575pt.
-<graficas/person_hist.png, id=37, 487.8225pt x 199.74625pt>
-File: graficas/person_hist.png Graphic file (type png)
-<use graficas/person_hist.png>
-Package pdftex.def Info: graficas/person_hist.png  used on input line 258.
-(pdftex.def)             Requested size: 171.66864pt x 70.29321pt.
-<graficas/flower_seg.png, id=38, 487.8225pt x 199.74625pt>
-File: graficas/flower_seg.png Graphic file (type png)
-<use graficas/flower_seg.png>
-Package pdftex.def Info: graficas/flower_seg.png  used on input line 260.
-(pdftex.def)             Requested size: 171.66864pt x 70.29321pt.
-<graficas/flower_hist.png, id=39, 487.8225pt x 199.74625pt>
-File: graficas/flower_hist.png Graphic file (type png)
-<use graficas/flower_hist.png>
-Package pdftex.def Info: graficas/flower_hist.png  used on input line 262.
-(pdftex.def)             Requested size: 171.66864pt x 70.29321pt.
+<graficas/lena.png, id=29, 587.19376pt x 294.09875pt>
+File: graficas/lena.png Graphic file (type png)
+<use graficas/lena.png>
+Package pdftex.def Info: graficas/lena.png  used on input line 248.
+(pdftex.def)             Requested size: 171.66864pt x 85.97754pt.
+<graficas/fr/optimizada_0.png, id=31, 598.235pt x 292.09125pt>
+File: graficas/fr/optimizada_0.png Graphic file (type png)
+<use graficas/fr/optimizada_0.png>
+Package pdftex.def Info: graficas/fr/optimizada_0.png  used on input line 290.
+(pdftex.def)             Requested size: 183.93149pt x 89.80748pt.
+<graficas/fr/funcion_0.png, id=32, 378.41376pt x 279.0425pt>
+File: graficas/fr/funcion_0.png Graphic file (type png)
+<use graficas/fr/funcion_0.png>
+Package pdftex.def Info: graficas/fr/funcion_0.png  used on input line 294.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/fr/gradiente_0.png, id=33, 384.43625pt x 279.0425pt>
+File: graficas/fr/gradiente_0.png Graphic file (type png)
+<use graficas/fr/gradiente_0.png>
+Package pdftex.def Info: graficas/fr/gradiente_0.png  used on input line 295.
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+[3 <./graficas/lena.png> <./graficas/fr/optimizada_0.png>]
+<graficas/fr/optimizada_1.png, id=40, 599.23875pt x 294.09875pt>
+File: graficas/fr/optimizada_1.png Graphic file (type png)
+<use graficas/fr/optimizada_1.png>
+Package pdftex.def Info: graficas/fr/optimizada_1.png  used on input line 300.
+(pdftex.def)             Requested size: 171.66864pt x 84.24982pt.
+<graficas/fr/funcion_1.png, id=41, 378.41376pt x 279.0425pt>
+File: graficas/fr/funcion_1.png Graphic file (type png)
+<use graficas/fr/funcion_1.png>
+Package pdftex.def Info: graficas/fr/funcion_1.png  used on input line 304.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/fr/gradiente_1.png, id=42, 384.43625pt x 279.0425pt>
+File: graficas/fr/gradiente_1.png Graphic file (type png)
+<use graficas/fr/gradiente_1.png>
+Package pdftex.def Info: graficas/fr/gradiente_1.png  used on input line 305.
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+<graficas/fr/optimizada_2.png, id=43, 596.2275pt x 294.09875pt>
+File: graficas/fr/optimizada_2.png Graphic file (type png)
+<use graficas/fr/optimizada_2.png>
+Package pdftex.def Info: graficas/fr/optimizada_2.png  used on input line 310.
+(pdftex.def)             Requested size: 171.66864pt x 84.67613pt.
+<graficas/fr/funcion_2.png, id=44, 378.41376pt x 279.0425pt>
+File: graficas/fr/funcion_2.png Graphic file (type png)
+<use graficas/fr/funcion_2.png>
+Package pdftex.def Info: graficas/fr/funcion_2.png  used on input line 314.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/fr/gradiente_2.png, id=45, 384.43625pt x 279.0425pt>
+File: graficas/fr/gradiente_2.png Graphic file (type png)
+<use graficas/fr/gradiente_2.png>
+Package pdftex.def Info: graficas/fr/gradiente_2.png  used on input line 315.
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+<graficas/pr/optimizada_0.png, id=46, 597.23125pt x 294.09875pt>
+File: graficas/pr/optimizada_0.png Graphic file (type png)
+<use graficas/pr/optimizada_0.png>
+Package pdftex.def Info: graficas/pr/optimizada_0.png  used on input line 335.
+(pdftex.def)             Requested size: 183.93149pt x 90.57281pt.
+<graficas/pr/funcion_0.png, id=47, 378.41376pt x 279.0425pt>
+File: graficas/pr/funcion_0.png Graphic file (type png)
+<use graficas/pr/funcion_0.png>
+Package pdftex.def Info: graficas/pr/funcion_0.png  used on input line 339.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/pr/gradiente_0.png, id=48, 384.43625pt x 279.0425pt>
+File: graficas/pr/gradiente_0.png Graphic file (type png)
+<use graficas/pr/gradiente_0.png>
+Package pdftex.def Info: graficas/pr/gradiente_0.png  used on input line 340.
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+<graficas/pr/optimizada_1.png, id=49, 597.23125pt x 294.09875pt>
+File: graficas/pr/optimizada_1.png Graphic file (type png)
+<use graficas/pr/optimizada_1.png>
+Package pdftex.def Info: graficas/pr/optimizada_1.png  used on input line 345.
+(pdftex.def)             Requested size: 171.66864pt x 84.53702pt.
+ [4 <./graficas/fr/funcion_0.png> <./graficas/fr/gradiente_0.png> <./graficas/f
+r/optimizada_1.png> <./graficas/fr/funcion_1.png> <./graficas/fr/gradiente_1.pn
+g> <./graficas/fr/optimizada_2.png> <./graficas/fr/funcion_2.png> <./graficas/f
+r/gradiente_2.png> <./graficas/pr/optimizada_0.png> <./graficas/pr/funcion_0.pn
+g> <./graficas/pr/gradiente_0.png>]
+<graficas/pr/funcion_1.png, id=64, 378.41376pt x 279.0425pt>
+File: graficas/pr/funcion_1.png Graphic file (type png)
+<use graficas/pr/funcion_1.png>
+Package pdftex.def Info: graficas/pr/funcion_1.png  used on input line 349.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/pr/gradiente_1.png, id=65, 384.43625pt x 279.0425pt>
+File: graficas/pr/gradiente_1.png Graphic file (type png)
+<use graficas/pr/gradiente_1.png>
+Package pdftex.def Info: graficas/pr/gradiente_1.png  used on input line 350.
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+<graficas/pr/optimizada_2.png, id=66, 598.235pt x 294.09875pt>
+File: graficas/pr/optimizada_2.png Graphic file (type png)
+<use graficas/pr/optimizada_2.png>
+Package pdftex.def Info: graficas/pr/optimizada_2.png  used on input line 355.
+(pdftex.def)             Requested size: 183.93149pt x 90.42473pt.
+<graficas/pr/funcion_2.png, id=67, 378.41376pt x 279.0425pt>
+File: graficas/pr/funcion_2.png Graphic file (type png)
+<use graficas/pr/funcion_2.png>
+Package pdftex.def Info: graficas/pr/funcion_2.png  used on input line 359.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/pr/gradiente_2.png, id=68, 384.43625pt x 279.0425pt>
+File: graficas/pr/gradiente_2.png Graphic file (type png)
+<use graficas/pr/gradiente_2.png>
+Package pdftex.def Info: graficas/pr/gradiente_2.png  used on input line 360.
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+<graficas/hs/optimizada_0.png, id=69, 598.235pt x 294.09875pt>
+File: graficas/hs/optimizada_0.png Graphic file (type png)
+<use graficas/hs/optimizada_0.png>
+Package pdftex.def Info: graficas/hs/optimizada_0.png  used on input line 379.
+(pdftex.def)             Requested size: 183.93149pt x 90.42473pt.
+<graficas/hs/funcion_0.png, id=70, 378.41376pt x 279.0425pt>
+File: graficas/hs/funcion_0.png Graphic file (type png)
+<use graficas/hs/funcion_0.png>
+Package pdftex.def Info: graficas/hs/funcion_0.png  used on input line 383.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/hs/gradiente_0.png, id=71, 384.43625pt x 279.0425pt>
+File: graficas/hs/gradiente_0.png Graphic file (type png)
+<use graficas/hs/gradiente_0.png>
+Package pdftex.def Info: graficas/hs/gradiente_0.png  used on input line 384.
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+<graficas/hs/optimizada_1.png, id=72, 598.235pt x 294.09875pt>
+File: graficas/hs/optimizada_1.png Graphic file (type png)
+<use graficas/hs/optimizada_1.png>
+Package pdftex.def Info: graficas/hs/optimizada_1.png  used on input line 389.
+(pdftex.def)             Requested size: 183.93149pt x 90.42473pt.
+<graficas/hs/funcion_1.png, id=73, 378.41376pt x 279.0425pt>
+File: graficas/hs/funcion_1.png Graphic file (type png)
+<use graficas/hs/funcion_1.png>
+Package pdftex.def Info: graficas/hs/funcion_1.png  used on input line 393.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/hs/gradiente_1.png, id=74, 384.43625pt x 279.0425pt>
+File: graficas/hs/gradiente_1.png Graphic file (type png)
+<use graficas/hs/gradiente_1.png>
+Package pdftex.def Info: graficas/hs/gradiente_1.png  used on input line 394.
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+ [5 <./graficas/pr/optimizada_1.png> <./graficas/pr/funcion_1.png> <./graficas/
+pr/gradiente_1.png> <./graficas/pr/optimizada_2.png> <./graficas/pr/funcion_2.p
+ng> <./graficas/pr/gradiente_2.png> <./graficas/hs/optimizada_0.png> <./grafica
+s/hs/funcion_0.png> <./graficas/hs/gradiente_0.png> <./graficas/hs/optimizada_1
+.png> <./graficas/hs/funcion_1.png>]
+<graficas/hs/optimizada_2.png, id=89, 596.2275pt x 294.09875pt>
+File: graficas/hs/optimizada_2.png Graphic file (type png)
+<use graficas/hs/optimizada_2.png>
+Package pdftex.def Info: graficas/hs/optimizada_2.png  used on input line 399.
+(pdftex.def)             Requested size: 183.93149pt x 90.72539pt.
+<graficas/hs/funcion_2.png, id=90, 379.4175pt x 279.0425pt>
+File: graficas/hs/funcion_2.png Graphic file (type png)
+<use graficas/hs/funcion_2.png>
+Package pdftex.def Info: graficas/hs/funcion_2.png  used on input line 403.
+(pdftex.def)             Requested size: 147.14668pt x 108.22151pt.
+<graficas/hs/gradiente_2.png, id=91, 385.44pt x 279.0425pt>
+File: graficas/hs/gradiente_2.png Graphic file (type png)
+<use graficas/hs/gradiente_2.png>
+Package pdftex.def Info: graficas/hs/gradiente_2.png  used on input line 404.
+(pdftex.def)             Requested size: 147.14668pt x 106.5269pt.
+<graficas/frpr/optimizada_0.png, id=92, 598.235pt x 294.09875pt>
+File: graficas/frpr/optimizada_0.png Graphic file (type png)
+<use graficas/frpr/optimizada_0.png>
+Package pdftex.def Info: graficas/frpr/optimizada_0.png  used on input line 423
+.
+(pdftex.def)             Requested size: 183.93149pt x 90.42473pt.
+<graficas/frpr/funcion_0.png, id=93, 378.41376pt x 279.0425pt>
+File: graficas/frpr/funcion_0.png Graphic file (type png)
+<use graficas/frpr/funcion_0.png>
+Package pdftex.def Info: graficas/frpr/funcion_0.png  used on input line 427.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/frpr/gradiente_0.png, id=94, 384.43625pt x 279.0425pt>
+File: graficas/frpr/gradiente_0.png Graphic file (type png)
+<use graficas/frpr/gradiente_0.png>
+Package pdftex.def Info: graficas/frpr/gradiente_0.png  used on input line 428.
+
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+<graficas/frpr/optimizada_1.png, id=95, 597.23125pt x 294.09875pt>
+File: graficas/frpr/optimizada_1.png Graphic file (type png)
+<use graficas/frpr/optimizada_1.png>
+Package pdftex.def Info: graficas/frpr/optimizada_1.png  used on input line 433
+.
+(pdftex.def)             Requested size: 183.93149pt x 90.57281pt.
+<graficas/frpr/funcion_1.png, id=96, 378.41376pt x 279.0425pt>
+File: graficas/frpr/funcion_1.png Graphic file (type png)
+<use graficas/frpr/funcion_1.png>
+Package pdftex.def Info: graficas/frpr/funcion_1.png  used on input line 437.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/frpr/gradiente_1.png, id=97, 384.43625pt x 279.0425pt>
+File: graficas/frpr/gradiente_1.png Graphic file (type png)
+<use graficas/frpr/gradiente_1.png>
+Package pdftex.def Info: graficas/frpr/gradiente_1.png  used on input line 438.
+
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
+<graficas/frpr/optimizada_2.png, id=98, 598.235pt x 294.09875pt>
+File: graficas/frpr/optimizada_2.png Graphic file (type png)
+<use graficas/frpr/optimizada_2.png>
+Package pdftex.def Info: graficas/frpr/optimizada_2.png  used on input line 443
+.
+(pdftex.def)             Requested size: 183.93149pt x 90.42473pt.
+ [6 <./graficas/hs/gradiente_1.png> <./graficas/hs/optimizada_2.png> <./grafica
+s/hs/funcion_2.png> <./graficas/hs/gradiente_2.png> <./graficas/frpr/optimizada
+_0.png> <./graficas/frpr/funcion_0.png> <./graficas/frpr/gradiente_0.png> <./gr
+aficas/frpr/optimizada_1.png> <./graficas/frpr/funcion_1.png> <./graficas/frpr/
+gradiente_1.png>]
+<graficas/frpr/funcion_2.png, id=112, 378.41376pt x 279.0425pt>
+File: graficas/frpr/funcion_2.png Graphic file (type png)
+<use graficas/frpr/funcion_2.png>
+Package pdftex.def Info: graficas/frpr/funcion_2.png  used on input line 447.
+(pdftex.def)             Requested size: 147.14668pt x 108.50679pt.
+<graficas/frpr/gradiente_2.png, id=113, 384.43625pt x 279.0425pt>
+File: graficas/frpr/gradiente_2.png Graphic file (type png)
+<use graficas/frpr/gradiente_2.png>
+Package pdftex.def Info: graficas/frpr/gradiente_2.png  used on input line 448.
+
+(pdftex.def)             Requested size: 147.14668pt x 106.8079pt.
 - LAST -
-Extra skip:29.35051pt
-Left:719.69951pt/0.0pt
-Right:688.21983pt/2.12917pt
-Output:700.393pt
-[3 <./graficas/rose_seg.png> <./graficas/rose_hist.png> <./graficas/person_seg.
-png> <./graficas/person_hist.png> <./graficas/flower_seg.png> <./graficas/flowe
-r_hist.png>] (./T08_MC_EstebanReyesSaldana.aux
+Extra skip:42.83847pt
+Left:338.81128pt/0.0pt
+Right:293.84364pt/2.12917pt
+Output:333.07796pt
+ [7 <./graficas/frpr/optimizada_2.png> <./graficas/frpr/funcion_2.png> <./grafi
+cas/frpr/gradiente_2.png>] (./T10_MC_EstebanReyesSaldana.aux
 LaTeX Info: Redefining \. on input line 9.
 LaTeX Info: Redefining \% on input line 9.
 ) ) 
 Here is how much of TeX's memory you used:
- 27479 strings out of 480906
- 660124 string characters out of 5910771
- 1035668 words of memory out of 5000000
- 42599 multiletter control sequences out of 15000+600000
- 551204 words of font info for 87 fonts, out of 8000000 for 9000
+ 27708 strings out of 480906
+ 666909 string characters out of 5910771
+ 1028666 words of memory out of 5000000
+ 42825 multiletter control sequences out of 15000+600000
+ 550937 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  69i,11n,119p,841b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/sym
-bols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on T08_MC_EstebanReyesSaldana.pdf (3 pages, 899494 bytes).
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on T10_MC_EstebanReyesSaldana.pdf (7 pages, 2240378 bytes).
 PDF statistics:
- 115 PDF objects out of 1000 (max. 8388607)
+ 178 PDF objects out of 1000 (max. 8388607)
  76 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 43 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 198 words of extra memory for PDF output out of 10000 (max. 10000000)
 
