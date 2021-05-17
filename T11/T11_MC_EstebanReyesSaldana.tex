@@ -1,0 +1,320 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,USenglish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{flushend}
+\usepackage{pgf,tikz, pgfplots}
+\usetikzlibrary{arrows}
+\pgfplotsset{compat=1.15}
+\usepackage{pgf,tikz,pgfplots}
+%escribir programas
+\usepackage{listings}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+%encabezado
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\thepage} % Números de página en las esquinas de los encabezados
+%%%%%%%%%%%%%%%%%%%% BOXES %%%%%%%%%%%%%%%%%%%
+\usepackage{bm}
+\newcommand{\commentedbox}[2]{%
+	\mbox{
+		\begin{tabular}[t]{@{}c@{}}
+			$\boxed{\displaystyle#1}$\\
+			#2
+		\end{tabular}%
+	}%
+}
+\usepackage{framed}
+\usepackage{wrapfig}\definecolor{shadecolor}{RGB}{224,238,238}
+%%%%%%%%%%%%%%%%%%%%%%%%% DEFINITIONS %%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{defi}{Definición}[section]%Para definiciones
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}[section]%Para definiciones
+\newtheorem{prop}{Proposición}
+\theoremstyle{definition}
+\newtheorem{ej}{Ejemplo}[section]
+\newtheorem{lem}{Lema}
+\newtheorem{prblm}{Problema}
+\newtheorem{col}{Corolario}[section]
+
+
+
+\title{\textbf{Tarea 11: Introducción al Cálculo Variacional}\\ Optimización I \\ \Large {Maestría en Computación}\\ \Large {Centro de Investigación en Matemáticas}}
+\author{Esteban Reyes Saldaña \\ esteban.reyes@cimat.mx}
+
+\begin{document}
+
+\selectlanguage{spanish}
+\twocolumn[
+\begin{@twocolumnfalse}
+	\maketitle
+\end{@twocolumnfalse}]
+
+\section*{Ejercicio 1}
+\begin{shaded*}
+	Usa la ecuación de Euler-Lagrange para buscar los extremos de las siguientes funcionales
+	\begin{eqnarray}
+		J\left[  y \right] & = & \int_{a}^{b} (xy' + (y')^2) dx, \\
+		J\left[  y \right] & = & \int_{a}^{b} (1+x)(y')^2 dx.
+	\end{eqnarray}
+\end{shaded*}
+\textbf{Solución.} Recordemos que la \textbf{Ecuación de Euler-Lagrange} está dada por
+\begin{shaded*}
+	\begin{eqnarray}
+		\dfrac{\partial f}{\partial y} - \dfrac{d}{\partial x} \left( \dfrac{\partial f}{\partial y'} \right) = 0.
+	\end{eqnarray}
+\end{shaded*}
+Ahora,
+\begin{itemize}
+	\item[(i)] observemos que
+	\begin{eqnarray*}
+		\dfrac{\partial f}{\partial y}  & = & 0 \\
+		\dfrac{\partial f}{\partial y'} & = & x + 2 y' \\
+		\dfrac{d}{dx}\left( \dfrac{\partial f}{\partial y'} \right) & = & 1 + 2 y''
+	\end{eqnarray*}
+	Así que, por la ecuación de Euler-Lagrange,
+	\begin{eqnarray*}
+		1 + 2 y'' & = & 0 \\
+			  y'' & = & -\dfrac{1}{2} 
+	\end{eqnarray*}
+	Integrando ambos lados de esta ecuación dos veces y por el teorema fundamental del cálculo, obtenemos,
+		\begin{eqnarray*}
+		y''         & = & -\dfrac{1}{2} \\
+		\int \left(\int y'' dx\right) dx  & = & \int \left(\int y'' -\dfrac{1}{2} dx\right) dx \\
+		\int y' dx  & = & -\dfrac{1}{2} \int x + c dx
+	\end{eqnarray*}
+	\begin{shaded*}
+		\begin{eqnarray*}
+			y  & = & -\dfrac{1}{4} x^2 + c_1x + c_2 .
+		\end{eqnarray*}
+	\end{shaded*}
+	\item[(ii)] observemos que
+	\begin{eqnarray*}
+		\dfrac{\partial f}{\partial y}  & = & 0 \\
+		\dfrac{\partial f}{\partial y'} & = & 2(1+x) y' \\
+		\dfrac{d}{dx}\left( \dfrac{\partial f}{\partial y'} \right) & = & 2(1+x) y'' + 2 y' 
+	\end{eqnarray*}
+	Así que, por la ecuación de Euler-Lagrange y asumiento que $ y' \neq 0 $,
+	\begin{eqnarray*}
+		2(1+x) y'' + 2 y'  & = & 0 \\
+		\dfrac{y''}{y'} & = & -\dfrac{1}{1+x} 
+	\end{eqnarray*}
+	Sea $ v(y(x)) = y'(x) $, luego
+	\begin{eqnarray*}
+		\dfrac{v'}{v} & = & -\dfrac{1}{1+x} 
+	\end{eqnarray*}
+	Integrando ambos lados de esta ecuación respecto a $ x $ y por el teorema fundamental del cálculo, obtenemos,
+	\begin{eqnarray*}
+		log(v) & = & - log(1+x)  + c
+	\end{eqnarray*}
+	aplicando la función exponencial de ambos lados de esta última ecuación, obtenemos
+	\begin{eqnarray*}
+		v & = & e^{- log(1+x) + c} \\
+		v & = & c_1 \dfrac{1}{1+x}
+	\end{eqnarray*}
+	sustituyendo $ v = y' $,
+	\begin{eqnarray*}
+		y' & = & e^{- log(1+x) + c} \\
+		y' & = & \dfrac{c_1}{1+x}
+	\end{eqnarray*}
+	integrando ambos lados de la ecuación con respecto a $ x $, tenemos
+	\begin{shaded*}
+	\begin{eqnarray*}
+		y  & = &  c_1 log(x+1) + c_2.
+	\end{eqnarray*}
+	\end{shaded*}
+\end{itemize}
+\section*{Ejercicio 2}
+\begin{shaded*}
+	Derivar las ecuaciones de Euler Lagrange usando el Método de Lagrange de
+	\begin{eqnarray}
+		\int_x \int_y F (x,y,f_x, f_y) dx dy \\
+		\int_x \int_y F (x,y,u, v, u_x, v_x, u_y,v_y) dx dy.
+	\end{eqnarray}
+	donde $ f, u, v : \mathbb{R}^2 \to \mathbb{R} $ y 
+	\begin{equation*}
+		\begin{matrix}
+			f_x & = & \dfrac{\partial f}{\partial x} & , & f_y & = & \dfrac{\partial f}{\partial y} \\
+			u_x & = & \dfrac{\partial u}{\partial x} & , & u_y & = & \dfrac{\partial u}{\partial y} \\
+			v_x & = & \dfrac{\partial v}{\partial x} & , & v_y & = & \dfrac{\partial v}{\partial y}.
+		\end{matrix}
+	\end{equation*}
+\end{shaded*}
+\textbf{Solución}. 
+\begin{itemize}
+	\item[(i)] Sea $ \Omega $ el dominio de integración y $ \hat{\Omega} $ la curva límite de $ \Omega $. Además 
+\begin{equation*}
+	h(x,y) = \epsilon \eta (x, y)
+\end{equation*}
+con $ \eta(x, y) = 0 $ para todo $ (x,y) \in \hat{\Omega} $. Se introduce la variación
+\begin{equation*}
+	W(x,y) := f(x,y) + h(x,y) = f(x, y) + \epsilon \eta(x,y). 
+\end{equation*}
+Sea
+\begin{equation}
+	I(\epsilon) = \int_x \int_y F(x, y, W, W_x, W_y) dx dy.
+\end{equation}
+Por otro lado, notemos que
+\begin{eqnarray*}
+	\dfrac{\partial W}{\partial \epsilon} & = & \eta(x,y) = \eta \\
+	\dfrac{\partial W_x}{\partial \epsilon} & = & 	\dfrac{\partial}{\partial \epsilon}\eta(x,y)  = \eta_x \\
+	\dfrac{\partial W_y}{\partial \epsilon} & = & 	\dfrac{\partial}{\partial \epsilon}\eta(x,y) = \eta_y.
+\end{eqnarray*}
+Luego, diferenciando respecto a $ \epsilon $ y usando regla de la cadena
+\small{\begin{eqnarray*}
+	I'(\epsilon) & = & \int_x \int_y \dfrac{\partial F}{\partial W}\dfrac{\partial W}{\partial \epsilon} + \dfrac{\partial F}{\partial W_x}\dfrac{\partial W_x}{\partial \epsilon}  + \dfrac{\partial F}{\partial W_y}\dfrac{\partial W_y}{\partial \epsilon} dx dy \\
+	             & = & \int_x \int_y \dfrac{\partial F}{\partial W}\eta + \dfrac{\partial F}{\partial W_x}\eta_x  + \dfrac{\partial F}{\partial W_y}\eta_y dx dy.
+\end{eqnarray*}}
+Para $ \epsilon = 0 $ se tiene que
+\begin{eqnarray*}
+	0 & = & \int_x \int_y \dfrac{\partial F}{\partial W}\eta + \dfrac{\partial F}{\partial W_x}\eta_x  + \dfrac{\partial F}{\partial W_y}\eta_y dx dy.
+\end{eqnarray*}
+Ahora, por el Teorema de Green, se tiene 
+\begin{eqnarray*}
+	0 & = & \int_x \int_y \eta \left[ \dfrac{\partial F}{\partial f} - \dfrac{\partial}{\partial x} \left( \dfrac{\partial F}{\partial f_x} \right)  - \dfrac{\partial}{\partial y} \left( \dfrac{\partial F}{\partial f_y} \right) \right] dx dy \\
+	  &   & + \int_{\hat{\Omega}} \eta \left( \dfrac{\partial F}{\partial f_x} \dfrac{y}{ds} - \dfrac{\partial F}{\partial f_y} \dfrac{x}{ds} \right) ds.
+\end{eqnarray*}
+utilizando el hecho que $ \eta(x,y) = 0 $ sobre el límite del conjunto de integración obtenemos
+\begin{eqnarray*}
+	\int_x \int_y \eta \left[ \dfrac{\partial F}{\partial f} - \dfrac{\partial}{\partial x} \left( \dfrac{\partial F}{\partial f_x} \right)  - \dfrac{\partial}{\partial y} \left( \dfrac{\partial F}{\partial f_y} \right) \right] dx dy & = & 0.
+\end{eqnarray*}
+Como $ \eta \neq 0 $ para $ \Omega $, entonces la función $ f(x,y) $ debe cumplir
+\begin{shaded*}
+	\begin{eqnarray}
+		\dfrac{\partial F}{\partial f} - \dfrac{\partial}{\partial x} \left( \dfrac{\partial F}{\partial f_x} \right)  - \dfrac{\partial}{\partial y} \left( \dfrac{\partial F}{\partial f_y} \right) = 0.
+	\end{eqnarray}
+\end{shaded*}
+\end{itemize}
+
+\begin{itemize}
+\item[(ii)] Procedemos de forma similar al caso (i). Sean
+\begin{eqnarray*}
+	W(x, y) & = & u(x,y) + \epsilon_1 \eta (x,y) \\
+	Z(x,y) & = & v(x,y) + \epsilon_2 \theta (x,y).
+\end{eqnarray*}
+Luego, si $ \epsilon = [\epsilon_1, \epsilon_2]^T $,
+\small{\begin{equation*}
+	I(\epsilon) = \int_x \int_y F (x,y,W,Z,W_x, Z_x, W_y, Z_y) dx dy
+\end{equation*}}
+por lo que, derivando respecto a cada entrada tenemos
+\begin{eqnarray*}
+	\nabla I(\epsilon) = \left[ \begin{matrix}
+								\int_x \int_y \dfrac{\partial F}{\partial W} \eta + \dfrac{\partial F}{\partial u_x} \eta_x + \dfrac{\partial F}{\partial u_y} \eta_y dx dy \\
+								\int_x \int_y \dfrac{\partial F}{\partial W} \theta + \dfrac{\partial F}{\partial u_x} \theta_x + \dfrac{\partial F}{\partial u_y} \theta_y dx dy
+						   \end{matrix} \right]
+\end{eqnarray*}
+Evaluando en $ \epsilon = [0,0]^T $ y aplicando el Teorema de Green, llegamos a que 
+\begin{shaded*}
+	\begin{eqnarray}
+		 \begin{matrix}
+			\dfrac{\partial F}{\partial u} - \dfrac{\partial}{\partial x} \dfrac{\partial F}{\partial u_x}  - \dfrac{\partial}{\partial y} \dfrac{\partial F}{\partial u_y}  & = & 0\\
+			\dfrac{\partial F}{\partial v} - \dfrac{\partial}{\partial x} \dfrac{\partial F}{\partial v_x}  - \dfrac{\partial}{\partial y} \dfrac{\partial F}{\partial v_y} & = & 0.
+		\end{matrix}
+	\end{eqnarray}
+\end{shaded*}
+\end{itemize}
+\section*{Ejercicio 3}
+\begin{shaded}
+	Obtener las ecuaciones de Euler-Lagrange de
+\small{	\begin{eqnarray}
+		\int_x \int_y (f-g)^2 + \lambda || \nabla f ||^2 dx dy \\
+		\int_x \int_y (p - q -p_x u - q_x v)^2 + \lambda (|| \nabla u ||^2 + || \nabla v ||^2) dx dy	
+	\end{eqnarray}}
+donde $ f, u, v : \mathbb{R}^2 \to \mathbb{R} $ y $ p, q : \mathbb{R}^2 \to \mathbb{R} $ son funciones dadas.
+\end{shaded}
+Para resolver estos dos problemas, se utilizarán los resultados obtenidos en el \textbf{Ejercicio 2}.
+\begin{itemize}
+	\item[(i)] Notemos que
+	\begin{equation*}
+		|| \nabla f ||^2 = f_x^2 + f_y^2
+	\end{equation*}
+	Así que
+	\begin{eqnarray*}
+		&   & \int_x \int_y (f-g)^2 + \lambda || \nabla f ||^2 dx dy \\
+		& = & \int_x \int_y (f-g)^2 + \lambda (f_x^2 + f_y^2) dx dy.
+	\end{eqnarray*}
+	Aquí
+	\begin{equation*}
+		F(x,y,f_x, f_y) = (f-g)^2 + \lambda (f_x^2 + f_y^2)
+	\end{equation*}
+	Luego,
+	\begin{eqnarray*}
+		\dfrac{\partial F}{\partial f} & = &  2(f-g) \\
+		\dfrac{\partial}{\partial x} \dfrac{\partial F}{\partial f_x} & = &  \dfrac{\partial}{\partial x} 2 \lambda f_x\\
+		& = & 2 \lambda f_{xx} \\
+		\dfrac{\partial}{\partial y} \dfrac{\partial F}{\partial f_y} & = &  \dfrac{\partial}{\partial y} 2 \lambda f_y \\
+		& = & 2 \lambda f_{yy}
+	\end{eqnarray*}
+	utilizando la ecuación (7), tenemos que
+		\begin{eqnarray*}
+		0	& = & \dfrac{\partial F}{\partial f} - \dfrac{\partial}{\partial x} \left( \dfrac{\partial F}{\partial f_x} \right)  - \dfrac{\partial}{\partial y} \left( \dfrac{\partial F}{\partial f_y} \right) \\
+			& = & 2(f-g) - 2\lambda (f_{xx} + f_{yy}) \\
+			& = & 2(f-g) - 2\lambda (f_{xx} + f_{yy}).
+		\end{eqnarray*}
+	la \textbf{Ecuación de Euler-Lagrange} está dada por
+	\begin{shaded*}
+		\begin{eqnarray*}
+			(f-g) - \lambda (f_{xx} + f_{yy}) & = & 0.
+		\end{eqnarray*}
+	\end{shaded*}
+	\item[(ii)] Notemos, de nuevo que
+	\begin{equation*}
+		|| \nabla u ||^2 + || \nabla v ||^2 = u_x^2 + u_y^2 + v_x^2 + v_y^2
+	\end{equation*}
+	Así que
+	\small{\begin{eqnarray*}
+		&   & \int_x \int_y (p - q -p_x u - q_x v)^2 + \lambda (|| \nabla u ||^2 + || \nabla v ||^2) dx dy \\
+		& = & \int_x \int_y (p - q -p_x u - q_x v)^2 + \lambda (u_x^2 + u_y^2 + v_x^2 + v_y^2) dx dy.
+	\end{eqnarray*}}
+	Aquí
+	\begin{eqnarray*}
+		F(x,y,u,v, u_x, v_y, u_y, v_y) & = & (p - q -p_x u - q_x v)^2  \\
+									   &   &+ \lambda (u_x^2 + u_y^2 + v_x^2 + v_y^2)
+	\end{eqnarray*}
+	Luego,
+	\begin{eqnarray*}
+		\dfrac{\partial F}{\partial u} & = &  -2 p_x (p - q -p_x u - q_x v) \\
+		\dfrac{\partial}{\partial x} \dfrac{\partial F}{\partial u_x} & = &  \dfrac{\partial}{\partial x} 2 \lambda u_x\\
+		& = & 2 \lambda u_{xx} \\
+		\dfrac{\partial}{\partial y} \dfrac{\partial F}{\partial u_y} & = &  \dfrac{\partial}{\partial y} 2 \lambda u_y \\
+		& = & 2 \lambda u_{yy}
+	\end{eqnarray*}
+	y 
+	\begin{eqnarray*}
+		\dfrac{\partial F}{\partial v} & = &  -2q_x(p - q -p_x u - q_x v) \\
+		\dfrac{\partial}{\partial x} \dfrac{\partial F}{\partial v_x} & = &  \dfrac{\partial}{\partial x} 2 \lambda v_x\\
+		& = & 2 \lambda u_{xx} \\
+		\dfrac{\partial}{\partial y} \dfrac{\partial F}{\partial v_y} & = &  \dfrac{\partial}{\partial y} 2 \lambda v_y \\
+		& = & 2 \lambda v_{yy}
+	\end{eqnarray*}
+	utilizando las ecuaciones (8), tenemos 
+		\begin{eqnarray*}
+			0 & = & \dfrac{\partial F}{\partial u} - \dfrac{\partial}{\partial x} \dfrac{\partial F}{\partial u_x}  - \dfrac{\partial}{\partial y} \dfrac{\partial F}{\partial u_y} \\
+			& = & -2 p_x (p - q -p_x u - q_x v) - 2\lambda (u_{xx} + u_{yy}).
+		\end{eqnarray*}
+	y 
+	\begin{eqnarray*}
+		0 & = & \dfrac{\partial F}{\partial v} - \dfrac{\partial}{\partial x} \dfrac{\partial F}{\partial v_x}  - \dfrac{\partial}{\partial y} \dfrac{\partial F}{\partial v_y} \\
+		& = & -v.
+	\end{eqnarray*}
+Por lo que las \textbf{Ecuación de Euler-Lagrange} están dadas por
+\begin{shaded*}
+	\begin{eqnarray*}
+		p_x (p - q -p_x u - q_x v) + \lambda (u_{xx} + u_{yy}) & = & 0 \\
+		q_x (p - q -p_x u - q_x v) + \lambda (u_{xx} + u_{yy}) & = & 0.
+	\end{eqnarray*}
+\end{shaded*}
+\end{itemize}
+
+\end{document}
